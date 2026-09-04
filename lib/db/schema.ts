@@ -66,6 +66,12 @@ export const storyActs = sqliteTable('story_acts', {
   plateMidMediaId: integer('plate_mid_media_id'),
   plateForeMediaId: integer('plate_fore_media_id'),
   loopMediaId: integer('loop_media_id'),
+  /**
+   * The clip that flies from THIS scene into the next one. The film is a chain
+   * of dive/connector pairs, so a connector belongs to the act it leaves —
+   * the last act has none.
+   */
+  connectorMediaId: integer('connector_media_id'),
   sortOrder: order(),
   visible: visible(),
 });

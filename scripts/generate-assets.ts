@@ -31,7 +31,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const MANIFEST_PATH = join(HERE, 'assets.manifest.json');
 
 /** Which plate column an entry fills on its act. */
-type Slot = 'sky' | 'mid' | 'fore' | 'loop';
+type Slot = 'sky' | 'mid' | 'fore' | 'loop' | 'connector';
 
 type Entry = {
   id: string;
@@ -58,6 +58,7 @@ const SLOT_COLUMN = {
   mid: 'plateMidMediaId',
   fore: 'plateForeMediaId',
   loop: 'loopMediaId',
+  connector: 'connectorMediaId',
 } as const;
 
 /** Widths emitted for each still. The largest act should stay under ~1.5MB. */
@@ -197,7 +198,7 @@ async function main(): Promise<void> {
       process.stdout.write(`${entry.act}/${entry.slot} … `);
       const buffer = await readSource(entry);
 
-      const isVideo = entry.slot === 'loop';
+      const isVideo = entry.slot === 'loop' || entry.slot === 'connector';
       let filename: string;
       let width: number | null = null;
       let height: number | null = null;

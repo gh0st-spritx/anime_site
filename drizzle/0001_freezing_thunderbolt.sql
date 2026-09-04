@@ -1,0 +1,1 @@
+ALTER TABLE `story_acts` ADD `connector_media_id` integer;

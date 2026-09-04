@@ -69,7 +69,11 @@ body {
   overflow-x: hidden;
 }
 
-img, video { max-width: 100%; height: auto; display: block; }
+/* The film's own media is sized by the engine (object-fit: cover, height:100%).
+   A blanket `height: auto` here overrode that and letterboxed every scene. */
+img, video { max-width: 100%; display: block; }
+img:not(.sw-scene__still):not(.sw-scene__video),
+video:not(.sw-scene__video) { height: auto; }
 
 a { color: var(--accent); text-underline-offset: 3px; }
 a:focus-visible,

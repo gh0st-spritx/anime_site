@@ -1,24 +1,13 @@
-import { getPageData, type Act } from '../lib/db/queries.ts';
-import { isIntensity } from '../lib/motion.ts';
-import MotionProvider from '../components/motion/MotionContext.tsx';
-import SmoothScroll from '../components/motion/SmoothScroll.tsx';
-import Scene from '../components/motion/Scene.tsx';
-import AtmosphereCanvas from '../components/motion/AtmosphereCanvas.tsx';
+import { getPageData } from '../lib/db/queries.ts';
+import { buildSections } from '../lib/world/sections.ts';
+import { mediaUrl } from '../lib/media-url.ts';
+import { ageFrom } from '../lib/age.ts';
+import { hrefFor, isExternal } from '../lib/links.ts';
+import ScrollWorld from '../components/world/ScrollWorld.tsx';
 import AudioToggle from '../components/motion/AudioToggle.tsx';
-import ActRoom from '../components/scenes/ActRoom.tsx';
-import ActPull from '../components/scenes/ActPull.tsx';
-import ActField from '../components/scenes/ActField.tsx';
-import ActSignal from '../components/scenes/ActSignal.tsx';
-import ActClassroom from '../components/scenes/ActClassroom.tsx';
-import ActTerminal from '../components/scenes/ActTerminal.tsx';
-import ActBadges from '../components/scenes/ActBadges.tsx';
-import ActWorkshop from '../components/scenes/ActWorkshop.tsx';
-import ActArcade from '../components/scenes/ActArcade.tsx';
-import ActReturn from '../components/scenes/ActReturn.tsx';
 
-// The page reads SQLite on every request. Reads are sub-millisecond, and it
-// keeps the admin panel's changes instant without cache plumbing.
-// ponytail: revisit only if this ever sees real traffic.
+// Reads SQLite on every request. Sub-millisecond, and it keeps admin edits
+// instant without cache plumbing.
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
@@ -34,72 +23,172 @@ export default async function Home() {
     );
   }
 
-  const siteIntensity = isIntensity(settings.motionIntensity)
-    ? settings.motionIntensity
-    : 'full';
+  const sections = buildSections(data, { motion: settings.motionIntensity });
 
-  /** Each act's content. Scene wraps it to attach the choreography. */
-  function renderAct(act: Act) {
-    switch (act.key) {
-      case 'room':
-        return (
-          <ActRoom
-            act={act}
-            name={profile.name}
-            title={profile.title}
-            birthdate={profile.birthdate}
-          />
-        );
-      case 'pull':
-        return <ActPull act={act} />;
-      case 'field':
-        return <ActField act={act} />;
-      case 'signal':
-        return <ActSignal act={act} />;
-      case 'classroom':
-        return <ActClassroom act={act} education={data.education} />;
-      case 'terminal':
-        return <ActTerminal act={act} skills={data.skills} />;
-      case 'badges':
-        return <ActBadges act={act} certifications={data.certifications} />;
-      case 'workshop':
-        return (
-          <ActWorkshop
-            act={act}
-            projects={data.projects}
-            learning={data.learning}
-          />
-        );
-      case 'arcade':
-        return <ActArcade act={act} games={data.games} />;
-      case 'return':
-        return <ActReturn act={act} links={data.links} name={profile.name} />;
-      default:
-        // An act added to the database with no component yet.
-        return null;
-    }
-  }
+  // The chain: one connector between each pair of scenes. A missing clip is
+  // passed as null — the engine crossfades that seam directly rather than
+  // breaking the flight.
+  const connectors =
+    settings.motionIntensity === 'full'
+      ? data.acts
+          .slice(0, -1)
+          .map((act) =>
+            act.connectorMediaId
+              ? mediaUrl(act.connectorMediaId, { kind: 'video' })
+              : null,
+          )
+      : [];
+
+  const age = ageFrom(profile.birthdate);
 
   return (
-    <MotionProvider siteIntensity={siteIntensity}>
-      <a className="skip" href="#main">
+    <>
+      <a className="skip" href="#story">
         Skip to content
       </a>
-      <SmoothScroll />
-      <AtmosphereCanvas />
+
+      <ScrollWorld
+        config={{
+          brand: { name: profile.name, href: '#top' },
+          hint: 'scroll to go in',
+          nav: true,
+          atmosphere: false,
+          crossfade: 0.1,
+          sections,
+          connectors,
+        }}
+      />
+
       <AudioToggle armed={settings.audioDefaultOn} />
 
-      <main id="main">
-        {data.acts.map((act) => {
-          const content = renderAct(act);
-          if (!content) return null;
-          return (
-            <Scene key={act.id} actKey={act.key}>
-              {content}
-            </Scene>
-          );
-        })}
+      {/*
+        The same story as plain HTML, underneath the film. Hidden by CSS only
+        once the engine actually mounts, so a visitor without JavaScript — or a
+        crawler — gets the whole thing rather than an empty page.
+      */}
+      <main id="story" className="story-fallback">
+        <h1>
+          {profile.name} — {profile.title}
+        </h1>
+        <p>
+          {age} years old. {profile.bio}
+        </p>
+
+        {data.acts.map((act) => (
+          <section key={act.id} id={`s-${act.key}`}>
+            {act.kicker && <p>{act.kicker}</p>}
+            {act.title && <h2>{act.title}</h2>}
+            {act.body
+              .split(/\n\s*\n/)
+              .filter(Boolean)
+              .map((p, i) => (
+                <p key={i}>{p.trim()}</p>
+              ))}
+          </section>
+        ))}
+
+        <section id="s-education">
+          <h2>Education</h2>
+          <ul>
+            {data.education.map((e) => (
+              <li key={e.id}>
+                <strong>{e.institution}</strong> — {e.credential} {e.field} (
+                {e.startYear}
+                {e.endYear ? `–${e.endYear}` : '–present'})
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="s-skills">
+          <h2>Skills</h2>
+          <dl>
+            {data.skills.map((s) => (
+              <div key={s.id}>
+                <dt>
+                  {s.name}
+                  {s.note ? ` (${s.note})` : ''}
+                </dt>
+                <dd>{s.proficiency}%</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section id="s-certifications">
+          <h2>Certifications</h2>
+          <ul>
+            {data.certifications.map((c) => (
+              <li key={c.id}>
+                {c.name}
+                {c.issuer ? ` — ${c.issuer}` : ''}
+                {c.credentialUrl && (
+                  <>
+                    {' '}
+                    <a href={c.credentialUrl} target="_blank" rel="noopener noreferrer">
+                      Verify
+                    </a>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="s-projects">
+          <h2>Projects</h2>
+          {data.projects.length === 0 ? (
+            <p>
+              Nothing shipped yet — that is a date stamp, not an accident. One
+              year into a CSE degree, foundation first.
+            </p>
+          ) : (
+            <ul>
+              {data.projects.map((p) => (
+                <li key={p.id}>
+                  <strong>{p.title}</strong>
+                  {p.summary ? ` — ${p.summary}` : ''}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section id="s-learning">
+          <h2>Currently learning</h2>
+          <ul>
+            {data.learning.map((l) => (
+              <li key={l.id}>{l.title}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="s-contact">
+          <h2>Contact</h2>
+          <ul>
+            {data.links.map((l) => {
+              const href = hrefFor(l.kind, l.value);
+              return (
+                <li key={l.id}>
+                  {l.label}:{' '}
+                  {href ? (
+                    <a
+                      href={href}
+                      {...(isExternal(l.kind)
+                        ? { target: '_blank', rel: 'me noopener noreferrer' }
+                        : {})}
+                    >
+                      {l.value}
+                    </a>
+                  ) : (
+                    l.value
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       </main>
-    </MotionProvider>
+    </>
   );
 }

@@ -8,6 +8,13 @@
       "when": 1788543675033,
       "tag": "0000_modern_virginia_dare",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788558636463,
+      "tag": "0001_freezing_thunderbolt",
+      "breakpoints": true
     }
   ]
 }

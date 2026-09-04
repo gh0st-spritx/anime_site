@@ -3,6 +3,7 @@ import * as s from '../lib/db/schema.ts';
 import { runMigrations } from '../lib/db/migrate.ts';
 import type { SectionConfig } from '../lib/db/schema.ts';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
+import { eq } from 'drizzle-orm';
 
 /**
  * Seeds Soumik's real content. Idempotent: any table that already has rows is
@@ -19,16 +20,16 @@ const ACTS: {
   body: string;
 }[] = [
   {
-    key: 'room',
-    kicker: '02:14',
+    key: 'door',
+    kicker: 'Come in',
     title: 'Soumik Halder',
-    body: 'A desk, two machines, and the particular quiet of a room where everyone else is asleep. This is where most of it happens now. Scroll — it did not start here.',
+    body: 'Two in the morning, and the light is still on under the door. Scroll, and it opens.',
   },
   {
-    key: 'pull',
-    kicker: '',
-    title: '',
-    body: '',
+    key: 'room',
+    kicker: '02:14',
+    title: 'This is where it happens now',
+    body: 'A desk, two machines, and the particular quiet of a room where everyone else is asleep. Keep going — it did not start here.',
   },
   {
     key: 'field',
@@ -43,7 +44,7 @@ const ACTS: {
     body: 'So he installed Linux, and read until he understood enough to get onto their network. It worked.\n\nBut the part that stayed with him was not the getting in. It was the discovery that a thing everyone around him treated as solid — as simply how it is — had a seam in it. That systems are built by people, and people leave edges.\n\nHe has spent the years since learning the difference between doing that because you can and doing it because someone asked you to. That difference has a name, and it turned out to be a career.',
   },
   {
-    key: 'classroom',
+    key: 'campus',
     kicker: 'The years',
     title: 'Sundarban to Dhaka',
     body: 'Science at Govt. Sundarban College. Then a year at a desk with admission papers, which is its own kind of grind and does not photograph well. Then North South University, Computer Science and Engineering, from September 2025.',
@@ -299,7 +300,43 @@ export function seed(): void {
       .run();
   }
 
-  // Projects are deliberately empty. Act 7 is designed for that state.
+  // Projects are deliberately empty. The workshop scene is designed for it.
+
+  ensureActs();
+}
+
+/**
+ * Reconciles story_acts with the scenes the film actually has.
+ *
+ * The rebuild replaced the `pull` interlude with real connector footage and
+ * added `door` in front, so a database seeded before that carries an act with
+ * no scene and is missing the opening one. Inserting what is missing and
+ * retiring what no longer exists keeps an existing install working instead of
+ * requiring a wipe.
+ */
+function ensureActs(): void {
+  const wanted = ACTS.map((a) => a.key);
+  const existing = db.select().from(s.storyActs).all();
+  const have = new Set(existing.map((a) => a.key));
+
+  ACTS.forEach((act, index) => {
+    if (have.has(act.key)) {
+      db.update(s.storyActs)
+        .set({ sortOrder: index })
+        .where(eq(s.storyActs.key, act.key))
+        .run();
+      return;
+    }
+    db.insert(s.storyActs)
+      .values({ ...act, sortOrder: index, visible: true })
+      .run();
+  });
+
+  for (const act of existing) {
+    if (!wanted.includes(act.key)) {
+      db.delete(s.storyActs).where(eq(s.storyActs.key, act.key)).run();
+    }
+  }
 }
 
 // Allow `npm run seed`.

@@ -10,21 +10,11 @@
       "file": "assets/media/room-mid.webp"
     },
     {
-      "id": "field-sky",
-      "act": "field",
-      "slot": "sky",
-      "credits": 2,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_1c5ba9e8-2aca-4a7e-a586-fe2b6539d32e.png",
-      "alt": "A wide golden-hour sky over a river delta, with tall clouds lit orange from below and egrets rising in the distance.",
-      "file": "assets/media/field-sky.webp"
-    },
-    {
       "id": "field-mid",
       "act": "field",
       "slot": "mid",
-      "credits": 2,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192426_d31d8428-bb9f-4c6f-a4cf-e85ce16c4b11.png",
-      "alt": "A boy of about eleven striking a football on a rough village pitch beside a wide river at golden hour, friends watching from further back and white egrets lifting off the water.",
+      "credits": 4,
+      "alt": "A boy of about eleven running and striking a football on a rough village pitch beside a wide river at golden hour, three friends watching and white egrets lifting off the water.",
       "file": "assets/media/field-mid.webp"
     },
     {
@@ -37,26 +27,8 @@
       "file": "assets/media/signal-mid.webp"
     },
     {
-      "id": "signal-sky",
-      "act": "signal",
-      "slot": "sky",
-      "credits": 2,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_5b95212d-0525-442d-b450-08085980bc19.png",
-      "alt": "A dark bedroom window looking out over a low-rise neighbourhood at night in fine rain, with a single warm lit window across the gap.",
-      "file": "assets/media/signal-sky.webp"
-    },
-    {
-      "id": "classroom-sky",
-      "act": "classroom",
-      "slot": "sky",
-      "credits": 2,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_86e9b48a-be40-46a5-b113-62b7cc6c88d5.png",
-      "alt": "A study desk at night under a single warm lamp, stacked with admission exam books, past papers and handwritten notes, a calendar with dates crossed off on the wall behind.",
-      "file": "assets/media/classroom-sky.webp"
-    },
-    {
-      "id": "classroom-mid",
-      "act": "classroom",
+      "id": "campus-mid",
+      "act": "campus",
       "slot": "mid",
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192426_28886c52-65e9-4fd4-9323-71e0a6d43836.png",
@@ -109,31 +81,164 @@
       "file": "assets/media/return-mid.webp"
     },
     {
-      "id": "room-loop",
+      "id": "door-mid",
+      "act": "door",
+      "slot": "mid",
+      "credits": 2,
+      "file": "assets/media/door-mid.webp",
+      "alt": "A dark hallway at night looking at a closed bedroom door, with cold cyan light spilling from underneath it across the floorboards."
+    },
+    {
+      "id": "01-door",
+      "act": "door",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/01-door.mp4",
+      "alt": "Camera move through the door scene."
+    },
+    {
+      "id": "c1-door-room",
+      "act": "door",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c1-door-room.mp4",
+      "alt": "Camera flight from the door scene into the next."
+    },
+    {
+      "id": "02-room",
       "act": "room",
       "slot": "loop",
-      "credits": 7.5,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192802_31f24caa-a263-456b-9b39-ed670aa6c5e9.mp4",
-      "alt": "The bedroom at night, dust drifting slowly through the monitor light.",
-      "file": "assets/media/room-loop.mp4"
+      "credits": 15,
+      "file": "assets/film/clips/02-room.mp4",
+      "alt": "Camera move through the room scene."
     },
     {
-      "id": "field-loop",
+      "id": "c2-room-field",
+      "act": "room",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c2-room-field.mp4",
+      "alt": "Camera flight from the room scene into the next."
+    },
+    {
+      "id": "03-field",
       "act": "field",
       "slot": "loop",
-      "credits": 7.5,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192802_452e2720-6ce3-47f6-b542-468d28b01104.mp4",
-      "alt": "The boy striking the football by the river at golden hour, grass moving in the wind and egrets crossing the frame.",
-      "file": "assets/media/field-loop.mp4"
+      "credits": 15,
+      "file": "assets/film/clips/03-field.mp4",
+      "alt": "Camera move through the field scene."
     },
     {
-      "id": "signal-loop",
+      "id": "c3-field-signal",
+      "act": "field",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c3-field-signal.mp4",
+      "alt": "Camera flight from the field scene into the next."
+    },
+    {
+      "id": "04-signal",
       "act": "signal",
       "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/04-signal.mp4",
+      "alt": "Camera move through the signal scene."
+    },
+    {
+      "id": "c4-signal-campus",
+      "act": "signal",
+      "slot": "connector",
       "credits": 7.5,
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192748_d136176b-c1d8-4506-ac80-23fd7e477946.mp4",
-      "alt": "The boy at the window at night, rain falling steadily and the laptop screen flickering on his face.",
-      "file": "assets/media/signal-loop.mp4"
+      "file": "assets/film/clips/c4-signal-campus.mp4",
+      "alt": "Camera flight from the signal scene into the next."
+    },
+    {
+      "id": "05-campus",
+      "act": "campus",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/05-campus.mp4",
+      "alt": "Camera move through the campus scene."
+    },
+    {
+      "id": "c5-campus-terminal",
+      "act": "campus",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c5-campus-terminal.mp4",
+      "alt": "Camera flight from the campus scene into the next."
+    },
+    {
+      "id": "06-terminal",
+      "act": "terminal",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/06-terminal.mp4",
+      "alt": "Camera move through the terminal scene."
+    },
+    {
+      "id": "c6-terminal-badges",
+      "act": "terminal",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c6-terminal-badges.mp4",
+      "alt": "Camera flight from the terminal scene into the next."
+    },
+    {
+      "id": "07-badges",
+      "act": "badges",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/07-badges.mp4",
+      "alt": "Camera move through the badges scene."
+    },
+    {
+      "id": "c7-badges-workshop",
+      "act": "badges",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c7-badges-workshop.mp4",
+      "alt": "Camera flight from the badges scene into the next."
+    },
+    {
+      "id": "08-workshop",
+      "act": "workshop",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/08-workshop.mp4",
+      "alt": "Camera move through the workshop scene."
+    },
+    {
+      "id": "c8-workshop-arcade",
+      "act": "workshop",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c8-workshop-arcade.mp4",
+      "alt": "Camera flight from the workshop scene into the next."
+    },
+    {
+      "id": "09-arcade",
+      "act": "arcade",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/09-arcade.mp4",
+      "alt": "Camera move through the arcade scene."
+    },
+    {
+      "id": "c9-arcade-return",
+      "act": "arcade",
+      "slot": "connector",
+      "credits": 7.5,
+      "file": "assets/film/clips/c9-arcade-return.mp4",
+      "alt": "Camera flight from the arcade scene into the next."
+    },
+    {
+      "id": "10-return",
+      "act": "return",
+      "slot": "loop",
+      "credits": 15,
+      "file": "assets/film/clips/10-return.mp4",
+      "alt": "Camera move through the return scene."
     }
   ]
 }

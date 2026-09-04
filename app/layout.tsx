@@ -2,10 +2,7 @@ import type { Metadata } from 'next';
 import { db } from '../lib/db/index.ts';
 import { profile, settings } from '../lib/db/schema.ts';
 import './globals.css';
-import './scenes.css';
-import './motion.css';
-import './plate.css';
-import './atmosphere.css';
+import './world.css';
 import './audio.css';
 
 export async function generateMetadata(): Promise<Metadata> {
