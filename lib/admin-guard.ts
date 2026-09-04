@@ -38,6 +38,26 @@ export async function requireAdmin(): Promise<{ uid: number }> {
   return { uid: user.id };
 }
 
+/**
+ * Same checks as requireAdmin, but returns null instead of redirecting —
+ * route handlers need to answer 401, not send a browser somewhere.
+ */
+export async function getAdmin(): Promise<{ uid: number } | null> {
+  const token = (await cookies()).get(SESSION_COOKIE)?.value;
+  const claims = await readSession(token);
+  if (!claims) return null;
+
+  const user = db
+    .select()
+    .from(adminUser)
+    .where(eq(adminUser.id, claims.uid))
+    .get();
+  if (!user) return null;
+  if (claims.fp !== sessionFingerprint(user.passwordHash)) return null;
+
+  return { uid: user.id };
+}
+
 export function adminExists(): boolean {
   return db.select().from(adminUser).limit(1).all().length > 0;
 }

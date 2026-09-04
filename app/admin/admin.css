@@ -149,3 +149,35 @@
   border: 1px solid var(--line); background: var(--bg);
 }
 .adm-media-id, .adm-media-empty { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Media library */
+.adm-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+.adm-tile {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.adm-tile img { width: 100%; height: 130px; object-fit: cover; display: block; background: var(--bg); }
+.adm-tile-file {
+  height: 130px; display: grid; place-items: center; background: var(--bg);
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px;
+}
+.adm-tile-meta { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.adm-tile-meta > span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.adm-tile-meta input { font-size: 13px; }
+
+.adm-dialog {
+  border: 0; padding: 0; background: transparent; max-width: min(920px, 92vw); width: 100%;
+}
+.adm-dialog::backdrop { background: rgba(0, 0, 0, 0.62); }
+.adm-dialog-inner {
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; max-height: 84vh; overflow-y: auto; color: var(--text);
+}
+.adm-dialog-head {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.adm-dialog-head h2 { margin: 0; font-size: 18px; }
