@@ -1,0 +1,93 @@
+/* Animated custom properties.
+   A custom property is a string unless it is registered, so GSAP would jump
+   0 -> 1 instead of interpolating. @property gives them a type and a starting
+   value so they tween smoothly. */
+
+@property --room-bloom {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --signal-glow {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --classroom-warm {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* The monitor light taking over Act 0 as the camera pushes in. */
+.act[data-act="room"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    60% 45% at 50% 45%,
+    rgba(190, 240, 255, calc(var(--room-bloom) * 0.85)),
+    rgba(110, 231, 255, calc(var(--room-bloom) * 0.35)) 45%,
+    transparent 72%
+  );
+}
+
+/* The screen filling with light as Act 3 turns. */
+.act[data-act="signal"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    70% 50% at 50% 62%,
+    rgba(125, 255, 168, calc(var(--signal-glow) * 0.22)),
+    rgba(110, 231, 255, calc(var(--signal-glow) * 0.12)) 50%,
+    transparent 75%
+  );
+}
+
+/* The lamp-lit admission year, warming and then cooling into the city. */
+.act[data-act="classroom"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    58% 44% at 34% 58%,
+    rgba(255, 186, 105, calc(var(--classroom-warm) * 0.3)),
+    transparent 70%
+  );
+}
+
+/* Pinned acts need their content above the grade layers. */
+.act .act-inner { position: relative; z-index: 3; }
+
+/* --- Sticky pinning -------------------------------------------------------
+   The track is taller than the viewport; the act sticks to the top while the
+   track scrolls past. ScrollTrigger scrubs against the track and never touches
+   the DOM, which is what keeps React from throwing on reconcile.
+   Without data-pinned the track is inert, so reduced motion and no-JS get a
+   plain stacked page. */
+.scene[data-pinned="true"] {
+  height: calc(100svh * (1 + var(--track, 1)));
+}
+.scene[data-pinned="true"] > .act {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 100svh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene[data-pinned="true"] { height: auto; }
+  .scene[data-pinned="true"] > .act { position: static; height: auto; }
+  .act[data-act="room"]::after,
+  .act[data-act="signal"]::after,
+  .act[data-act="classroom"]::after { display: none; }
+}

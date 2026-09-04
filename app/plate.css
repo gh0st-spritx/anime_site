@@ -1,0 +1,128 @@
+/* Scenery layers. Phase 3 fills these with generated anime art; until then the
+   gradients stand in so the parallax can be judged against real depth. */
+
+.plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.plate-layer {
+  position: absolute;
+  /* Overscan, so a layer drifting sideways never exposes an edge. */
+  inset: -8% -12%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+
+.plate-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Fallback scenery, per act ------------------------------------------- */
+
+/* The field: sky, treeline, and the ground running out of frame. */
+[data-act="field"] .plate-layer[data-layer="sky"] {
+  background-image:
+    radial-gradient(70% 46% at 22% 8%, rgba(255, 249, 226, 0.95), transparent 62%),
+    linear-gradient(180deg, #ffeec4 0%, #ffd08a 46%, #e8a352 100%);
+}
+[data-act="field"] .plate-layer[data-layer="mid"] {
+  background-image:
+    radial-gradient(120% 32% at 50% 100%, rgba(46, 78, 62, 0.92), transparent 70%),
+    linear-gradient(180deg, transparent 52%, rgba(63, 107, 92, 0.55) 66%, transparent 78%);
+}
+[data-act="field"] .plate-layer[data-layer="fore"] {
+  background-image:
+    linear-gradient(180deg, transparent 62%, rgba(28, 46, 30, 0.85) 88%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate-layer { will-change: auto; transform: none !important; }
+}
+
+/* --- Scrim ---------------------------------------------------------------
+   Generated art is bright and busy. Without a scrim the copy sits on top of a
+   detailed painting and stops being readable, which costs more than the art
+   gains. Each grade gets a wash tuned to where its text actually sits. */
+.act:has(.plate-layer img) .act-inner { position: relative; z-index: 3; }
+
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Must sit above .plate-video. The video sets z-index: 1, which put it over
+     the scrim on exactly the three acts that have loops — so the text
+     protection was being covered by the footage it exists to darken. */
+  z-index: 2;
+}
+
+/* Measured, not eyeballed: with a lighter wash the worst pixel under a glyph
+   came out at 1.01:1 against WCAG AA's 4.5:1. The text side is now nearly
+   opaque and only clears past 80% of the width, where no copy ever reaches. */
+[data-grade="night"] .plate::after {
+  background: linear-gradient(100deg, rgba(5, 7, 12, 0.985) 0%, rgba(5, 7, 12, 0.96) 34%, rgba(5, 7, 12, 0.55) 62%, rgba(5, 7, 12, 0.1) 88%);
+}
+[data-grade="gold"] .plate::after {
+  background: linear-gradient(100deg, rgba(255, 248, 232, 0.97) 0%, rgba(255, 244, 220, 0.93) 34%, rgba(255, 232, 190, 0.5) 62%, rgba(255, 220, 170, 0.06) 88%);
+}
+[data-grade="signal"] .plate::after {
+  background: linear-gradient(100deg, rgba(4, 9, 14, 0.985) 0%, rgba(4, 9, 14, 0.96) 34%, rgba(4, 9, 14, 0.55) 62%, rgba(4, 9, 14, 0.1) 88%);
+}
+[data-grade="lamp"] .plate::after {
+  background: linear-gradient(100deg, rgba(10, 9, 8, 0.985) 0%, rgba(12, 10, 9, 0.95) 34%, rgba(16, 13, 11, 0.5) 62%, rgba(20, 16, 12, 0.08) 88%);
+}
+[data-grade="term"] .plate::after {
+  background: linear-gradient(100deg, rgba(4, 9, 15, 0.985) 0%, rgba(4, 9, 15, 0.95) 34%, rgba(4, 9, 15, 0.52) 62%, rgba(4, 9, 15, 0.1) 88%);
+}
+[data-grade="violet"] .plate::after {
+  background: linear-gradient(100deg, rgba(8, 5, 18, 0.98) 0%, rgba(8, 5, 18, 0.94) 34%, rgba(8, 5, 18, 0.5) 62%, rgba(8, 5, 18, 0.08) 88%);
+}
+[data-grade="white"] .plate::after {
+  background: linear-gradient(100deg, rgba(9, 14, 20, 0.98) 0%, rgba(11, 17, 24, 0.94) 34%, rgba(13, 20, 28, 0.5) 62%, rgba(14, 22, 30, 0.08) 88%);
+}
+[data-grade="neon"] .plate::after {
+  background: linear-gradient(100deg, rgba(8, 5, 16, 0.98) 0%, rgba(8, 5, 16, 0.94) 34%, rgba(8, 5, 16, 0.5) 62%, rgba(8, 5, 16, 0.08) 88%);
+}
+[data-grade="dawn"] .plate::after {
+  background: linear-gradient(100deg, rgba(16, 11, 14, 0.98) 0%, rgba(22, 14, 16, 0.93) 34%, rgba(34, 20, 18, 0.48) 62%, rgba(40, 24, 20, 0.06) 88%);
+}
+
+/* A real plate replaces the placeholder gradient underneath it. */
+.plate-layer:has(img) { background-image: none; }
+
+/* The loop sits on top of its own still, which doubles as the poster, so the
+   swap from image to video is invisible. */
+.plate-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* The Signal's subject sits on the left of the source frame — exactly where
+   the copy goes, so the text landed on his face. Mirroring the plate moves him
+   to the right and leaves the text over rain and dark building instead. The
+   scene reads identically either way; nothing in it is handed or lettered. */
+[data-act="signal"] .plate-layer img,
+[data-act="signal"] .plate-video {
+  transform: scaleX(-1);
+}
+
+/* Text side needs to win against a detailed painting. */
+[data-grade="signal"] .plate::after {
+  background: linear-gradient(100deg, rgba(4, 9, 14, 0.96) 0%, rgba(4, 9, 14, 0.86) 38%, rgba(4, 9, 14, 0.3) 82%);
+}
+[data-grade="night"] .plate::after {
+  background: linear-gradient(100deg, rgba(5, 7, 12, 0.95) 0%, rgba(5, 7, 12, 0.8) 40%, rgba(5, 7, 12, 0.3) 84%);
+}

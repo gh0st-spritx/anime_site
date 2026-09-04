@@ -1,0 +1,17 @@
+/* The particle canvas sits above the acts with additive blending, so motes
+   read as dust in front of the lens. It must never intercept a click and is
+   irrelevant to anyone reading with assistive technology. */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Interactive things must stay above it. */
+.skip { z-index: 999; }
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere { display: none; }
+}
