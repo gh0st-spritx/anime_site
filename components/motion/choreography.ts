@@ -13,6 +13,24 @@ const one = (scene: HTMLElement, selector: string) =>
   scene.querySelector<HTMLElement>(selector);
 
 /**
+ * fromTo that skips an empty selection.
+ *
+ * Several acts legitimately have nothing to animate — no projects yet, no
+ * plates until Phase 3 — and GSAP logs "target not found" for every empty
+ * tween, on every scroll frame. Guarding here keeps the console usable.
+ */
+function fromTo(
+  tl: gsap.core.Timeline,
+  targets: HTMLElement[] | HTMLElement | null,
+  from: gsap.TweenVars,
+  to: gsap.TweenVars,
+  position: number,
+): void {
+  if (!targets || (Array.isArray(targets) && targets.length === 0)) return;
+  tl.fromTo(targets, from, to, position);
+}
+
+/**
  * Per-act scroll choreography.
  *
  * Everything here animates FROM a visible resting state, never TO one. If the
@@ -49,7 +67,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
         );
       }
 
-      tl.fromTo(
+      fromTo(
+        tl,
         scene,
         { '--room-bloom': 0 },
         { '--room-bloom': 1, ease: 'power2.in' },
@@ -66,7 +85,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       const bloom = one(scene, '.pull-bloom');
       if (!bloom) return;
 
-      tl.fromTo(
+      fromTo(
+        tl,
         bloom,
         { scale: 0.55, autoAlpha: 0.5, filter: 'blur(14px)' },
         { scale: 9, autoAlpha: 1, filter: 'blur(0px)', ease: 'power2.in' },
@@ -87,7 +107,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       // the left edge on narrow viewports and costs legibility for nothing.
       const layers = q(scene, '.plate-layer');
       layers.forEach((layer, depth) => {
-        tl.fromTo(
+        fromTo(
+          tl,
           layer,
           { xPercent: 4 + depth * 3, scale: 1.08 },
           { xPercent: -(4 + depth * 3), scale: 1.08, ease: 'none' },
@@ -95,7 +116,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
         );
       });
 
-      tl.fromTo(
+      fromTo(
+        tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
         { autoAlpha: 0, y: 34 },
         { autoAlpha: 1, y: 0, stagger: 0.12, ease: 'power2.out' },
@@ -103,7 +125,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       );
 
       if (quote) {
-        tl.fromTo(
+        fromTo(
+          tl,
           quote,
           { autoAlpha: 0, x: 30 },
           { autoAlpha: 1, x: 0, ease: 'power2.out' },
@@ -123,14 +146,16 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       const terminal = one(scene, '.terminal');
       const quote = one(scene, '.pull-quote');
 
-      tl.fromTo(
+      fromTo(
+        tl,
         q(scene, '.act-kicker, .act-title'),
         { autoAlpha: 0, y: 30 },
         { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.4 },
         0,
       );
 
-      tl.fromTo(
+      fromTo(
+        tl,
         q(scene, '.act-body p'),
         { autoAlpha: 0, y: 24 },
         { autoAlpha: 1, y: 0, stagger: 0.18, ease: 'power2.out', duration: 0.5 },
@@ -138,7 +163,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       );
 
       if (terminal) {
-        tl.fromTo(
+        fromTo(
+          tl,
           terminal,
           { autoAlpha: 0, y: 40 },
           { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.5 },
@@ -147,7 +173,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       }
 
       if (lines.length) {
-        tl.fromTo(
+        fromTo(
+          tl,
           lines,
           { autoAlpha: 0 },
           {
@@ -161,7 +188,8 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       }
 
       // The screen fills with light as the copy turns.
-      tl.fromTo(
+      fromTo(
+        tl,
         scene,
         { '--signal-glow': 0 },
         { '--signal-glow': 1, ease: 'power2.in', duration: 0.6 },
@@ -169,13 +197,264 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
       );
 
       if (quote) {
-        tl.fromTo(
+        fromTo(
+          tl,
           quote,
           { autoAlpha: 0, y: 26 },
           { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.4 },
           1.7,
         );
       }
+    },
+  },
+
+  /* Act 4 — The Classroom. A horizontal timeline scrubbed by vertical scroll.
+     Three stops: Sundarban College, the admission-exam year, NSU. */
+  classroom: {
+    options: { pin: true, track: 1.6, scrub: 1 },
+    build: (tl, scene) => {
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title, .act-body p'),
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.4 },
+        0,
+      );
+
+      const stops = q(scene, '.timeline li');
+      stops.forEach((stop, i) => {
+        tl.fromTo(
+          stop,
+          { autoAlpha: 0, x: -36 },
+          { autoAlpha: 1, x: 0, ease: 'power2.out', duration: 0.45 },
+          0.45 + i * 0.32,
+        );
+      });
+
+      // The grade warms through the lamp-lit middle stop, then cools to city.
+      tl.fromTo(
+        scene,
+        { '--classroom-warm': 0 },
+        { '--classroom-warm': 1, ease: 'sine.inOut', duration: 0.7 },
+        0.4,
+      ).to(scene, { '--classroom-warm': 0, ease: 'sine.inOut', duration: 0.7 }, 1.3);
+    },
+  },
+
+  /* Act 5 — The Terminal. Skill bars fill on scrub. The numbers beside them are
+     already in the HTML, so the honest figure survives with motion off. */
+  terminal: {
+    options: { pin: true, track: 1.5, scrub: 1 },
+    build: (tl, scene) => {
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title, .act-body p'),
+        { autoAlpha: 0, y: 26 },
+        { autoAlpha: 1, y: 0, stagger: 0.09, ease: 'power2.out', duration: 0.4 },
+        0,
+      );
+
+      const groups = q(scene, '.skills-group');
+      groups.forEach((group, gi) => {
+        tl.fromTo(
+          group,
+          { autoAlpha: 0, y: 30 },
+          { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.4 },
+          0.35 + gi * 0.18,
+        );
+      });
+
+      const bars = q(scene, '.skill-bar > span');
+      fromTo(
+        tl,
+        bars,
+        { scaleX: 0, transformOrigin: '0% 50%' },
+        {
+          scaleX: 1,
+          ease: 'power2.out',
+          duration: 0.7,
+          stagger: 0.05,
+        },
+        0.55,
+      );
+    },
+  },
+
+  /* Act 6 — The Badges. Four cards assemble out of scattered fragments. */
+  badges: {
+    options: { pin: true, track: 1.3, scrub: 1 },
+    build: (tl, scene) => {
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title, .act-body p'),
+        { autoAlpha: 0, y: 26 },
+        { autoAlpha: 1, y: 0, stagger: 0.09, ease: 'power2.out', duration: 0.4 },
+        0,
+      );
+
+      const cards = q(scene, '.badge');
+      cards.forEach((card, i) => {
+        const drift = i % 2 === 0 ? -1 : 1;
+        tl.fromTo(
+          card,
+          {
+            autoAlpha: 0,
+            y: 70,
+            x: drift * 40,
+            rotateZ: drift * 6,
+            scale: 0.9,
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            x: 0,
+            rotateZ: 0,
+            scale: 1,
+            ease: 'power3.out',
+            duration: 0.6,
+          },
+          0.4 + i * 0.16,
+        );
+      });
+    },
+  },
+
+  /* Act 7 — The Workshop. Pedestals light in sequence. With nothing on them,
+     the empty-state line holds the frame — that is the designed state. */
+  workshop: {
+    options: { pin: true, track: 1.4, scrub: 1 },
+    build: (tl, scene) => {
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title, .act-body p'),
+        { autoAlpha: 0, y: 26 },
+        { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.4 },
+        0,
+      );
+
+      const plinths = q(scene, '.pedestal');
+      plinths.forEach((plinth, i) => {
+        tl.fromTo(
+          plinth,
+          { autoAlpha: 0, y: 40 },
+          { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.4 },
+          0.5 + i * 0.2,
+        );
+        const glow = plinth.querySelector('.pedestal-glow');
+        if (glow) {
+          tl.fromTo(
+            glow,
+            { autoAlpha: 0 },
+            { autoAlpha: 1, ease: 'sine.out', duration: 0.5 },
+            0.6 + i * 0.2,
+          );
+        }
+      });
+
+      fromTo(
+        tl,
+        q(scene, '.project'),
+        { autoAlpha: 0, y: 40 },
+        { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.45 },
+        0.5,
+      );
+
+      fromTo(
+        tl,
+        q(scene, '.learning li'),
+        { autoAlpha: 0, x: -20 },
+        { autoAlpha: 1, x: 0, stagger: 0.08, ease: 'power2.out', duration: 0.4 },
+        1.15,
+      );
+    },
+  },
+
+  /* Act 7.5 — The Arcade. Cards deal onto the shelf. */
+  arcade: {
+    options: { pin: true, track: 1.3, scrub: 1 },
+    build: (tl, scene) => {
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title, .act-body p'),
+        { autoAlpha: 0, y: 26 },
+        { autoAlpha: 1, y: 0, stagger: 0.09, ease: 'power2.out', duration: 0.4 },
+        0,
+      );
+
+      fromTo(
+        tl,
+        q(scene, '.game'),
+        { autoAlpha: 0, y: 56, rotateZ: -4 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          rotateZ: 0,
+          ease: 'power3.out',
+          duration: 0.5,
+          stagger: 0.07,
+        },
+        0.4,
+      );
+    },
+  },
+
+  /* Act 8 — The Return. The room again at dawn. The football is on the desk.
+     This is the payoff, so the entrance is unhurried and the contacts resolve
+     last. */
+  return: {
+    options: { pin: true, track: 1.5, scrub: 1 },
+    build: (tl, scene) => {
+      const football = one(scene, '.football');
+
+      fromTo(
+        tl,
+        q(scene, '.act-kicker, .act-title'),
+        { autoAlpha: 0, y: 34 },
+        { autoAlpha: 1, y: 0, stagger: 0.12, ease: 'power2.out', duration: 0.5 },
+        0,
+      );
+
+      fromTo(
+        tl,
+        q(scene, '.act-body p'),
+        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.5 },
+        0.35,
+      );
+
+      // The ball settles onto the desk rather than appearing on it.
+      if (football) {
+        fromTo(
+          tl,
+          football,
+          { autoAlpha: 0, y: 70, rotate: -140, scale: 0.8 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            ease: 'power2.out',
+            duration: 0.9,
+          },
+          0.55,
+        );
+      }
+
+      fromTo(
+        tl,
+        q(scene, '.contact'),
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, stagger: 0.08, ease: 'power2.out', duration: 0.4 },
+        1.0,
+      );
+
+      fromTo(
+        tl,
+        q(scene, '.site-footer'),
+        { autoAlpha: 0 },
+        { autoAlpha: 1, ease: 'none', duration: 0.4 },
+        1.4,
+      );
     },
   },
 };

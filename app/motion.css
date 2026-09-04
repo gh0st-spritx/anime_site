@@ -15,6 +15,12 @@
   initial-value: 0;
 }
 
+@property --classroom-warm {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 /* The monitor light taking over Act 0 as the camera pushes in. */
 .act[data-act="room"]::after {
   content: "";
@@ -45,6 +51,20 @@
   );
 }
 
+/* The lamp-lit admission year, warming and then cooling into the city. */
+.act[data-act="classroom"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    58% 44% at 34% 58%,
+    rgba(255, 186, 105, calc(var(--classroom-warm) * 0.3)),
+    transparent 70%
+  );
+}
+
 /* Pinned acts need their content above the grade layers. */
 .act .act-inner { position: relative; z-index: 3; }
 
@@ -68,5 +88,6 @@
   .scene[data-pinned="true"] { height: auto; }
   .scene[data-pinned="true"] > .act { position: static; height: auto; }
   .act[data-act="room"]::after,
-  .act[data-act="signal"]::after { display: none; }
+  .act[data-act="signal"]::after,
+  .act[data-act="classroom"]::after { display: none; }
 }
