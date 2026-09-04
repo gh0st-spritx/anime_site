@@ -1,6 +1,7 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
 import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
+import { mediaUrl } from '../../lib/media-url.ts';
 
 /** Act 7.5 — The Arcade. The competitive instinct, changed venue. */
 export default function ActArcade({
@@ -17,7 +18,7 @@ export default function ActArcade({
           <li key={g.id} className="card game" data-status={g.status}>
             {g.coverMediaId && (
               /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={`/api/media/${g.coverMediaId}`} alt="" className="game-cover" loading="lazy" />
+              <img src={mediaUrl(g.coverMediaId)} alt="" className="game-cover" loading="lazy" />
             )}
             <h3>{g.title}</h3>
             {g.note && <p>{g.note}</p>}

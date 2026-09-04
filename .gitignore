@@ -48,3 +48,7 @@ yarn-error.log*
 # Verification volumes
 data-prod/
 data-final/
+
+# Static export output
+out/
+data-ci/

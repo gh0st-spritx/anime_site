@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useMotionIntensity } from '../motion/MotionContext.tsx';
+import { mediaUrl } from '../../lib/media-url.ts';
 
 /**
  * An act's video loop, loaded only when it is actually worth loading.
@@ -62,8 +63,8 @@ export default function PlateVideo({
       className="plate-video"
       // Only give it a source once the act is close; before that this is an
       // empty element that costs nothing.
-      src={near ? `/api/media/${mediaId}` : undefined}
-      poster={posterId ? `/api/media/${posterId}` : undefined}
+      src={near ? mediaUrl(mediaId, { kind: 'video' }) : undefined}
+      poster={posterId ? mediaUrl(posterId) : undefined}
       muted
       loop
       playsInline

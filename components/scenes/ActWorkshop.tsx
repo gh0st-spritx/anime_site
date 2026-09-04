@@ -1,6 +1,7 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
 import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
+import { mediaUrl } from '../../lib/media-url.ts';
 
 /**
  * Act 7 — The Workshop. Designed for an empty shelf rather than patched for it.
@@ -43,7 +44,7 @@ export default function ActWorkshop({
             <li key={p.id} className="card project" data-featured={p.featured ? 'true' : undefined}>
               {p.coverMediaId && (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={`/api/media/${p.coverMediaId}`} alt="" className="project-cover" loading="lazy" />
+                <img src={mediaUrl(p.coverMediaId)} alt="" className="project-cover" loading="lazy" />
               )}
               <h3>{p.title}</h3>
               {p.summary && <p>{p.summary}</p>}

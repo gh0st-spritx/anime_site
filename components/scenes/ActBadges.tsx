@@ -1,6 +1,7 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
 import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
+import { mediaUrl } from '../../lib/media-url.ts';
 
 /** Act 6 — The Badges. Certifications, with verify links where they exist. */
 export default function ActBadges({
@@ -17,7 +18,7 @@ export default function ActBadges({
           <li key={c.id} className="card badge">
             {c.mediaId && (
               /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={`/api/media/${c.mediaId}`} alt="" className="badge-art" loading="lazy" />
+              <img src={mediaUrl(c.mediaId)} alt="" className="badge-art" loading="lazy" />
             )}
             <h3>{c.name}</h3>
             {c.issuer && <p className="badge-issuer">{c.issuer}</p>}

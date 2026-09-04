@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+# GitHub Pages serves files, not a server. This builds the public site into a
+# static snapshot and publishes it. The admin panel and /api routes cannot
+# exist there — run the site on a Node host if you need them.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # A project page is served from /<repo>, so every asset URL needs it.
+      PAGES_BASE_PATH: /${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the content database
+        # Creates the database, seeds the story, and restores the artwork from
+        # the committed sources in assets/. The runner starts with an empty
+        # volume, exactly like a fresh deploy.
+        run: npm run assets
+
+      - name: Export the static site
+        run: npm run export:static
+
+      - name: Check the export is not empty
+        # A silent failure here would publish a blank site over a working one.
+        run: |
+          test -s out/index.html
+          grep -q "Soumik Halder" out/index.html
+          test -d out/_next/static
+          test "$(ls out/media | wc -l)" -gt 10
+          echo "out/ looks complete: $(du -sh out | cut -f1)"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

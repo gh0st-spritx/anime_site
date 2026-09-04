@@ -1,5 +1,6 @@
 import type { Act } from '../../lib/db/queries.ts';
 import PlateVideo from './PlateVideo.tsx';
+import { mediaUrl, mediaSrcSet } from '../../lib/media-url.ts';
 
 /**
  * An act's scenery, in depth-ordered layers.
@@ -25,13 +26,11 @@ export default function Plate({ act }: { act: Act }) {
           {mediaId && (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
-              src={`/api/media/${mediaId}`}
+              src={mediaUrl(mediaId)}
               // The pipeline emits these widths; the media route serves AVIF to
               // browsers that accept it. A phone fetches tens of kilobytes here
               // rather than the full-size plate.
-              srcSet={[960, 1600, 2400]
-                .map((w) => `/api/media/${mediaId}?w=${w} ${w}w`)
-                .join(', ')}
+              srcSet={mediaSrcSet(mediaId)}
               sizes="100vw"
               alt=""
               loading="lazy"
