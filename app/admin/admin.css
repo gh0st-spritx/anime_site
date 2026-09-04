@@ -181,3 +181,22 @@
   display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
 }
 .adm-dialog-head h2 { margin: 0; font-size: 18px; }
+
+.adm-h2 {
+  font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); font-weight: 600; margin: 28px 0 10px;
+}
+.adm-h2:first-of-type { margin-top: 0; }
+
+.adm-sections { list-style: none; margin: 0; padding: 0; }
+.adm-sections li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-bottom: 1px solid var(--line);
+}
+.adm-sections li:last-child { border-bottom: 0; }
+.adm-sections-n {
+  width: 22px; text-align: right; color: var(--muted);
+  font-variant-numeric: tabular-nums; font-size: 12px;
+}
+.adm-sections-title { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.adm-sections-title code { color: var(--muted); font-size: 11px; }
