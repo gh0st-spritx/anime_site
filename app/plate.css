@@ -59,34 +59,41 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* Must sit above .plate-video. The video sets z-index: 1, which put it over
+     the scrim on exactly the three acts that have loops — so the text
+     protection was being covered by the footage it exists to darken. */
+  z-index: 2;
 }
 
+/* Measured, not eyeballed: with a lighter wash the worst pixel under a glyph
+   came out at 1.01:1 against WCAG AA's 4.5:1. The text side is now nearly
+   opaque and only clears past 80% of the width, where no copy ever reaches. */
 [data-grade="night"] .plate::after {
-  background: linear-gradient(100deg, rgba(5, 7, 12, 0.94) 0%, rgba(5, 7, 12, 0.72) 44%, rgba(5, 7, 12, 0.3) 100%);
+  background: linear-gradient(100deg, rgba(5, 7, 12, 0.985) 0%, rgba(5, 7, 12, 0.96) 34%, rgba(5, 7, 12, 0.55) 62%, rgba(5, 7, 12, 0.1) 88%);
 }
 [data-grade="gold"] .plate::after {
-  background: linear-gradient(100deg, rgba(255, 244, 222, 0.92) 0%, rgba(255, 233, 196, 0.62) 42%, rgba(255, 220, 170, 0.12) 100%);
+  background: linear-gradient(100deg, rgba(255, 248, 232, 0.97) 0%, rgba(255, 244, 220, 0.93) 34%, rgba(255, 232, 190, 0.5) 62%, rgba(255, 220, 170, 0.06) 88%);
 }
 [data-grade="signal"] .plate::after {
-  background: linear-gradient(100deg, rgba(4, 9, 14, 0.94) 0%, rgba(4, 9, 14, 0.74) 46%, rgba(4, 9, 14, 0.28) 100%);
+  background: linear-gradient(100deg, rgba(4, 9, 14, 0.985) 0%, rgba(4, 9, 14, 0.96) 34%, rgba(4, 9, 14, 0.55) 62%, rgba(4, 9, 14, 0.1) 88%);
 }
 [data-grade="lamp"] .plate::after {
-  background: linear-gradient(100deg, rgba(12, 10, 8, 0.92) 0%, rgba(14, 12, 10, 0.68) 46%, rgba(20, 16, 12, 0.22) 100%);
+  background: linear-gradient(100deg, rgba(10, 9, 8, 0.985) 0%, rgba(12, 10, 9, 0.95) 34%, rgba(16, 13, 11, 0.5) 62%, rgba(20, 16, 12, 0.08) 88%);
 }
 [data-grade="term"] .plate::after {
-  background: linear-gradient(100deg, rgba(4, 9, 15, 0.93) 0%, rgba(4, 9, 15, 0.72) 46%, rgba(4, 9, 15, 0.3) 100%);
+  background: linear-gradient(100deg, rgba(4, 9, 15, 0.985) 0%, rgba(4, 9, 15, 0.95) 34%, rgba(4, 9, 15, 0.52) 62%, rgba(4, 9, 15, 0.1) 88%);
 }
 [data-grade="violet"] .plate::after {
-  background: linear-gradient(100deg, rgba(8, 5, 18, 0.9) 0%, rgba(8, 5, 18, 0.66) 46%, rgba(8, 5, 18, 0.24) 100%);
+  background: linear-gradient(100deg, rgba(8, 5, 18, 0.98) 0%, rgba(8, 5, 18, 0.94) 34%, rgba(8, 5, 18, 0.5) 62%, rgba(8, 5, 18, 0.08) 88%);
 }
 [data-grade="white"] .plate::after {
-  background: linear-gradient(100deg, rgba(10, 16, 22, 0.9) 0%, rgba(12, 19, 26, 0.66) 46%, rgba(14, 22, 30, 0.24) 100%);
+  background: linear-gradient(100deg, rgba(9, 14, 20, 0.98) 0%, rgba(11, 17, 24, 0.94) 34%, rgba(13, 20, 28, 0.5) 62%, rgba(14, 22, 30, 0.08) 88%);
 }
 [data-grade="neon"] .plate::after {
-  background: linear-gradient(100deg, rgba(8, 5, 16, 0.9) 0%, rgba(8, 5, 16, 0.66) 46%, rgba(8, 5, 16, 0.2) 100%);
+  background: linear-gradient(100deg, rgba(8, 5, 16, 0.98) 0%, rgba(8, 5, 16, 0.94) 34%, rgba(8, 5, 16, 0.5) 62%, rgba(8, 5, 16, 0.08) 88%);
 }
 [data-grade="dawn"] .plate::after {
-  background: linear-gradient(100deg, rgba(20, 14, 18, 0.9) 0%, rgba(28, 18, 20, 0.62) 46%, rgba(40, 24, 20, 0.16) 100%);
+  background: linear-gradient(100deg, rgba(16, 11, 14, 0.98) 0%, rgba(22, 14, 16, 0.93) 34%, rgba(34, 20, 18, 0.48) 62%, rgba(40, 24, 20, 0.06) 88%);
 }
 
 /* A real plate replaces the placeholder gradient underneath it. */

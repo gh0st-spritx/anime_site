@@ -7,8 +7,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_bab074a1-a608-427f-ac98-1a6a0d2d4b35.png",
       "alt": "A small bedroom at two in the morning, lit only by the cold blue glow of a computer monitor. A bed, a wardrobe, a desk with a monitor and laptop, and a football lying in shadow underneath the desk.",
-      "done": true,
-      "mediaId": 3
+      "file": "assets/media/room-mid.webp"
     },
     {
       "id": "field-sky",
@@ -17,8 +16,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_1c5ba9e8-2aca-4a7e-a586-fe2b6539d32e.png",
       "alt": "A wide golden-hour sky over a river delta, with tall clouds lit orange from below and egrets rising in the distance.",
-      "done": true,
-      "mediaId": 4
+      "file": "assets/media/field-sky.webp"
     },
     {
       "id": "field-mid",
@@ -27,8 +25,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192426_d31d8428-bb9f-4c6f-a4cf-e85ce16c4b11.png",
       "alt": "A boy of about eleven striking a football on a rough village pitch beside a wide river at golden hour, friends watching from further back and white egrets lifting off the water.",
-      "done": true,
-      "mediaId": 5
+      "file": "assets/media/field-mid.webp"
     },
     {
       "id": "signal-mid",
@@ -37,8 +34,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192425_46ca739f-d0ba-4b70-8b5c-2b87a63e38e2.png",
       "alt": "A teenage boy sitting by an open window at night in the rain, his face lit green by a laptop screen. Across the dark, one window is warmly lit and a small router light glows on a sill.",
-      "done": true,
-      "mediaId": 6
+      "file": "assets/media/signal-mid.webp"
     },
     {
       "id": "signal-sky",
@@ -47,8 +43,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_5b95212d-0525-442d-b450-08085980bc19.png",
       "alt": "A dark bedroom window looking out over a low-rise neighbourhood at night in fine rain, with a single warm lit window across the gap.",
-      "done": true,
-      "mediaId": 7
+      "file": "assets/media/signal-sky.webp"
     },
     {
       "id": "classroom-sky",
@@ -57,8 +52,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_86e9b48a-be40-46a5-b113-62b7cc6c88d5.png",
       "alt": "A study desk at night under a single warm lamp, stacked with admission exam books, past papers and handwritten notes, a calendar with dates crossed off on the wall behind.",
-      "done": true,
-      "mediaId": 8
+      "file": "assets/media/classroom-sky.webp"
     },
     {
       "id": "classroom-mid",
@@ -67,8 +61,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192426_28886c52-65e9-4fd4-9323-71e0a6d43836.png",
       "alt": "A student in a grey hoodie walking with a laptop bag across a modern university campus in Dhaka on a bright hazy afternoon, glass buildings and city towers beyond.",
-      "done": true,
-      "mediaId": 9
+      "file": "assets/media/classroom-mid.webp"
     },
     {
       "id": "terminal-mid",
@@ -77,8 +70,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_f78976fd-60e1-445e-b8a1-d6b2a9241ae1.png",
       "alt": "A dark room lit only by three monitors filled with scrolling terminal text and network graphs, streaks of cyan and violet light suggesting data moving through the air.",
-      "done": true,
-      "mediaId": 10
+      "file": "assets/media/terminal-mid.webp"
     },
     {
       "id": "badges-mid",
@@ -87,8 +79,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192425_6c982e8e-2b9d-4960-af78-d6cd50cd5244.png",
       "alt": "Four blank holographic certificate cards floating at different depths in a dark violet space, edged with cyan light and surrounded by drifting motes.",
-      "done": true,
-      "mediaId": 11
+      "file": "assets/media/badges-mid.webp"
     },
     {
       "id": "workshop-mid",
@@ -97,8 +88,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192354_8fb5ef52-9822-46c4-b6fe-3082ce781f38.png",
       "alt": "An empty, well-lit workshop with three bare display plinths standing in a row under focused ceiling spotlights, and a workbench of unused tools along the back wall.",
-      "done": true,
-      "mediaId": 12
+      "file": "assets/media/workshop-mid.webp"
     },
     {
       "id": "arcade-mid",
@@ -107,8 +97,7 @@
       "credits": 2,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192425_cde08407-4a69-4c51-a5de-bb66ec7d8def.png",
       "alt": "A dark wall of unlabelled game cases on a long shelf, lit entirely by magenta and cyan neon strips, with a controller resting on the shelf.",
-      "done": true,
-      "mediaId": 13
+      "file": "assets/media/arcade-mid.webp"
     },
     {
       "id": "return-mid",
@@ -117,8 +106,7 @@
       "credits": 4,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_193206_f610eb52-1232-4309-8c85-4b5a41473ce9.png",
       "alt": "The same bedroom at dawn seen from the same angle, sunrise light falling in a long bar across the desk and floor, the monitor dark, and the worn football now sitting on the desk beside the keyboard with the floor beneath it empty.",
-      "done": true,
-      "mediaId": 15
+      "file": "assets/media/return-mid.webp"
     },
     {
       "id": "room-loop",
@@ -127,8 +115,7 @@
       "credits": 7.5,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192802_31f24caa-a263-456b-9b39-ed670aa6c5e9.mp4",
       "alt": "The bedroom at night, dust drifting slowly through the monitor light.",
-      "done": true,
-      "mediaId": 16
+      "file": "assets/media/room-loop.mp4"
     },
     {
       "id": "field-loop",
@@ -137,8 +124,7 @@
       "credits": 7.5,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192802_452e2720-6ce3-47f6-b542-468d28b01104.mp4",
       "alt": "The boy striking the football by the river at golden hour, grass moving in the wind and egrets crossing the frame.",
-      "done": true,
-      "mediaId": 17
+      "file": "assets/media/field-loop.mp4"
     },
     {
       "id": "signal-loop",
@@ -147,8 +133,7 @@
       "credits": 7.5,
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GJgDJeQsc5s57oo0QSW5U54gxS/hf_20260904_192748_d136176b-c1d8-4506-ac80-23fd7e477946.mp4",
       "alt": "The boy at the window at night, rain falling steadily and the laptop screen flickering on his face.",
-      "done": true,
-      "mediaId": 18
+      "file": "assets/media/signal-loop.mp4"
     }
   ]
 }

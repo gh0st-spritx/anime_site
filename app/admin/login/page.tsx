@@ -8,12 +8,12 @@ export default function LoginPage() {
   if (!adminExists()) redirect('/admin/setup');
 
   return (
-    <div className="adm-auth">
+    <main className="adm-auth">
       <div className="adm-card">
         <h1 className="adm-h1">Admin</h1>
         <p className="adm-sub">Sign in to edit the site.</p>
         <LoginForm />
       </div>
-    </div>
+    </main>
   );
 }

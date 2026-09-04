@@ -24,7 +24,19 @@ export default function Plate({ act }: { act: Act }) {
         <div key={name} className="plate-layer" data-layer={name}>
           {mediaId && (
             /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={`/api/media/${mediaId}`} alt="" loading="lazy" decoding="async" />
+            <img
+              src={`/api/media/${mediaId}`}
+              // The pipeline emits these widths; the media route serves AVIF to
+              // browsers that accept it. A phone fetches tens of kilobytes here
+              // rather than the full-size plate.
+              srcSet={[960, 1600, 2400]
+                .map((w) => `/api/media/${mediaId}?w=${w} ${w}w`)
+                .join(', ')}
+              sizes="100vw"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
           )}
         </div>
       ))}

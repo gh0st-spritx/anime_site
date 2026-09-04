@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+.remember
+data
+docs
+tests
+*.md
+.env
+.env.local

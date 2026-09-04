@@ -44,3 +44,7 @@ yarn-error.log*
 
 # Keep the template, ignore real secrets.
 !.env.example
+
+# Verification volumes
+data-prod/
+data-final/

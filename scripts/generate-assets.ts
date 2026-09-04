@@ -6,9 +6,10 @@
  * result URL is recorded in scripts/assets.manifest.json, and running this
  * turns them into optimised local files wired to the right act.
  *
- * Re-runnable and resumable. An entry already marked `done` with its file
- * present on disk is skipped, so a failed run continues where it stopped
- * rather than regenerating or re-downloading anything.
+ * Re-runnable and resumable. An entry whose act slot is already filled by a
+ * media row with its file on disk is skipped, so a failed run continues where
+ * it stopped. The manifest itself is never rewritten — it describes the set,
+ * and the target database is the record of what has been applied.
  *
  *   npm run assets            apply the manifest
  *   npm run assets -- --force redo every entry
@@ -16,6 +17,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -23,6 +25,7 @@ import { eq } from 'drizzle-orm';
 import { db, UPLOADS_DIR } from '../lib/db/index.ts';
 import { media, storyActs } from '../lib/db/schema.ts';
 import { runMigrations } from '../lib/db/migrate.ts';
+import { seed } from './seed.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const MANIFEST_PATH = join(HERE, 'assets.manifest.json');
@@ -34,12 +37,18 @@ type Entry = {
   id: string;
   act: string;
   slot: Slot;
-  url: string;
+  /**
+   * A repo-relative source file, committed alongside the code. Preferred over
+   * `url`: a fresh deploy has an empty volume and no artwork, and the
+   * generator's CDN links will not live forever. Committing the sources makes
+   * `npm run assets` reproducible offline on any new host.
+   */
+  file?: string;
+  /** Where it originally came from. Kept for provenance. */
+  url?: string;
   alt: string;
   /** Credits this generation cost, for the run report. */
   credits?: number;
-  done?: boolean;
-  mediaId?: number;
 };
 
 type Manifest = { entries: Entry[] };
@@ -63,9 +72,24 @@ function saveManifest(manifest: Manifest): void {
   writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
 }
 
-async function download(url: string): Promise<Buffer> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+const REPO_ROOT = join(HERE, '..');
+
+/** Reads an entry's source: the committed file when there is one, else the URL. */
+async function readSource(entry: Entry): Promise<Buffer> {
+  if (entry.file) {
+    const path = resolve(REPO_ROOT, entry.file);
+    if (!path.startsWith(REPO_ROOT)) {
+      throw new Error(`manifest file path escapes the repo: ${entry.file}`);
+    }
+    if (!existsSync(path)) throw new Error(`missing source file ${entry.file}`);
+    return readFileSync(path);
+  }
+
+  if (!entry.url) throw new Error('entry has neither file nor url');
+  const res = await fetch(entry.url);
+  if (!res.ok) {
+    throw new Error(`${res.status} ${res.statusText} for ${entry.url}`);
+  }
   return Buffer.from(await res.arrayBuffer());
 }
 
@@ -106,12 +130,43 @@ async function transcodeStill(
   };
 }
 
+/**
+ * True when this entry's slot is already filled by a media row whose file is
+ * on disk.
+ *
+ * Deliberately asks the DATABASE rather than a flag in the manifest. Media ids
+ * are per-database, so a `done` marker written against one volume would make
+ * the pipeline skip work on a fresh deploy, and re-running against the original
+ * would insert duplicate rows. Asking the target directly is correct in both.
+ */
+function isApplied(entry: Entry): boolean {
+  const act = db
+    .select()
+    .from(storyActs)
+    .where(eq(storyActs.key, entry.act))
+    .get();
+  if (!act) return false;
+
+  const mediaId = act[SLOT_COLUMN[entry.slot]];
+  if (typeof mediaId !== 'number') return false;
+
+  const row = db.select().from(media).where(eq(media.id, mediaId)).get();
+  if (!row) return false;
+
+  return existsSync(join(UPLOADS_DIR, row.filename));
+}
+
 async function main(): Promise<void> {
   const force = process.argv.includes('--force');
   const dry = process.argv.includes('--dry');
 
   mkdirSync(UPLOADS_DIR, { recursive: true });
   runMigrations();
+  // The acts must exist before anything can be attached to them. Running the
+  // seed here (it is idempotent) means this works on a volume the app has
+  // never booted against — otherwise every UPDATE matches zero rows and the
+  // run reports success while wiring nothing.
+  seed();
 
   const manifest = loadManifest();
   if (manifest.entries.length === 0) {
@@ -127,12 +182,7 @@ async function main(): Promise<void> {
   for (const entry of manifest.entries) {
     credits += entry.credits ?? 0;
 
-    const alreadyDone =
-      entry.done &&
-      entry.mediaId &&
-      db.select().from(media).where(eq(media.id, entry.mediaId)).get();
-
-    if (alreadyDone && !force) {
+    if (!force && isApplied(entry)) {
       skipped += 1;
       continue;
     }
@@ -145,7 +195,7 @@ async function main(): Promise<void> {
 
     try {
       process.stdout.write(`${entry.act}/${entry.slot} … `);
-      const buffer = await download(entry.url);
+      const buffer = await readSource(entry);
 
       const isVideo = entry.slot === 'loop';
       let filename: string;
@@ -182,14 +232,18 @@ async function main(): Promise<void> {
         .returning()
         .get();
 
-      db.update(storyActs)
+      const updated = db
+        .update(storyActs)
         .set({ [SLOT_COLUMN[entry.slot]]: row.id })
         .where(eq(storyActs.key, entry.act))
         .run();
 
-      entry.done = true;
-      entry.mediaId = row.id;
-      saveManifest(manifest);
+      // Never let a no-op update pass as success.
+      if (updated.changes === 0) {
+        throw new Error(
+          `no act with key "${entry.act}" — media #${row.id} was stored but is attached to nothing`,
+        );
+      }
 
       applied += 1;
       console.log(`ok  #${row.id}  ${(bytes / 1024).toFixed(0)} KB`);

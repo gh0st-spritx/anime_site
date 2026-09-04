@@ -36,7 +36,10 @@
 
   --ink: #eef4fb;
   --ink-dim: #9fb0c4;
-  --ink-faint: #64748b;
+  /* Measured against the real composited background: the previous #64748b put
+     .timeline-note at 2.78:1, under WCAG AA's 4.5:1. Still clearly subordinate
+     to --ink-dim, now actually readable. */
+  --ink-faint: #93a3b8;
 
   --measure: 34rem;
   --gutter: clamp(1.25rem, 5vw, 5rem);
@@ -134,6 +137,9 @@ summary:focus-visible {
   letter-spacing: -0.025em;
   margin: 0 0 1.5rem;
   text-wrap: balance;
+  /* Headings must stay inside the scrim's protected band. Left unbounded, a
+     long title runs out over the bright half of the art and loses contrast. */
+  max-width: 18ch;
 }
 
 .act-body { max-width: var(--measure); }
@@ -160,17 +166,26 @@ summary:focus-visible {
 .stack { display: grid; gap: 1.5rem; }
 
 .card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* A real surface, not a tint. Cards sit in a grid that reaches the bright
+     half of the plate, where a 4%-white wash left their text at 2.67:1. They
+     have to carry their own contrast wherever they land. */
+  background: rgba(8, 12, 19, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   padding: 1.25rem 1.35rem;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(10px);
+}
+[data-grade="gold"] .card {
+  background: rgba(255, 250, 240, 0.86);
+  border-color: rgba(74, 51, 18, 0.18);
 }
 
 .grid-auto {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  /* auto-fill, not auto-fit: auto-fit collapses the empty tracks, so a single
+     project or certificate stretches across the whole row. */
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
   list-style: none;
   margin: 2.25rem 0 0;
   padding: 0;

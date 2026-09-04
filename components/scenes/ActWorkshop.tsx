@@ -4,7 +4,11 @@ import ActShell from '../site/ActShell.tsx';
 
 /**
  * Act 7 — The Workshop. Designed for an empty shelf rather than patched for it.
- * Once there are three or more projects the empty-state line retires itself.
+ *
+ * The empty-state heading and copy are the act's own words while there is
+ * nothing to show. The moment a project exists they retire together — leaving
+ * "Nothing shipped yet" above a shipped project would make the page contradict
+ * itself. The editable copy stays in the database for the state it describes.
  */
 export default function ActWorkshop({
   act,
@@ -15,10 +19,16 @@ export default function ActWorkshop({
   projects: PageData['projects'];
   learning: PageData['learning'];
 }) {
-  const isEarly = projects.length < 3;
+  const isEmpty = projects.length === 0;
 
   return (
-    <ActShell act={act} grade="white" plate={<Plate act={act} />} showBody={isEarly}>
+    <ActShell
+      act={act}
+      grade="white"
+      plate={<Plate act={act} />}
+      showBody={isEmpty}
+      titleOverride={isEmpty ? undefined : 'The workshop'}
+    >
       {projects.length === 0 ? (
         <ul className="pedestals" aria-label="Projects — none yet">
           {[0, 1, 2].map((i) => (

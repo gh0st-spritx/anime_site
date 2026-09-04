@@ -8,7 +8,7 @@ export default function SetupPage() {
   if (adminExists()) redirect('/admin/login');
 
   return (
-    <div className="adm-auth">
+    <main className="adm-auth">
       <div className="adm-card">
         <h1 className="adm-h1">Create your admin account</h1>
         <p className="adm-sub">
@@ -18,6 +18,6 @@ export default function SetupPage() {
         </p>
         <SetupForm />
       </div>
-    </div>
+    </main>
   );
 }
