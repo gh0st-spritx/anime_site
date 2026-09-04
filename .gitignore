@@ -52,3 +52,7 @@ data-final/
 # Static export output
 out/
 data-ci/
+
+# Raw generator output. The encoded clips in assets/film/clips are what
+# the site serves; these are intermediates and cost 124MB in history.
+assets/film/src/
