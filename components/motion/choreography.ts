@@ -38,14 +38,40 @@ function fromTo(
  * is already in its readable final form. That is what makes the fallbacks real
  * rather than a degraded copy of the animation.
  */
+
+/**
+ * Depth parallax for an act's scenery.
+ *
+ * Layers move at different rates so the scene has real depth rather than a
+ * flat pan. `sky` barely moves, `fore` moves most — the same rule a camera
+ * obeys. Called by every act that has a plate.
+ */
+function parallax(
+  tl: gsap.core.Timeline,
+  scene: HTMLElement,
+  amount = 1,
+): void {
+  const layers = q(scene, '.plate-layer');
+  layers.forEach((layer, depth) => {
+    const rate = (2 + depth * 3.5) * amount;
+    fromTo(
+      tl,
+      layer,
+      { yPercent: rate * 0.6, scale: 1.1 },
+      { yPercent: -rate * 0.6, scale: 1.1, ease: 'none' },
+      0,
+    );
+  });
+}
+
 export const CHOREOGRAPHY: Record<string, Choreography> = {
   /* Act 0 — The Room. The camera pushes toward the monitor and the glow takes
      over. The football stays behind, which is the point. */
   room: {
     options: { pin: true, track: 1.3, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       const inner = one(scene, '.act-inner');
-      const football = one(scene, '.football');
       const cue = one(scene, '.scroll-cue');
 
       if (cue) tl.to(cue, { autoAlpha: 0, duration: 0.12 }, 0);
@@ -56,15 +82,6 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
           { scale: 1.18, y: -40, transformOrigin: '50% 40%', ease: 'power1.in' },
           0,
         ).to(inner, { autoAlpha: 0, duration: 0.35 }, 0.55);
-      }
-
-      // The ball drifts further under the desk as the camera leaves it.
-      if (football) {
-        tl.to(
-          football,
-          { y: 60, x: 18, rotate: 24, autoAlpha: 0, ease: 'power1.in' },
-          0,
-        );
       }
 
       fromTo(
@@ -142,6 +159,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   signal: {
     options: { pin: true, track: 2.2, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       const lines = q(scene, '.terminal-line');
       const terminal = one(scene, '.terminal');
       const quote = one(scene, '.pull-quote');
@@ -213,6 +231,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   classroom: {
     options: { pin: true, track: 1.6, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
@@ -246,6 +265,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   terminal: {
     options: { pin: true, track: 1.5, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
@@ -284,6 +304,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   badges: {
     options: { pin: true, track: 1.3, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
@@ -324,6 +345,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   workshop: {
     options: { pin: true, track: 1.4, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
@@ -373,6 +395,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   arcade: {
     options: { pin: true, track: 1.3, scrub: 1 },
     build: (tl, scene) => {
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title, .act-body p'),
@@ -404,8 +427,7 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
   return: {
     options: { pin: true, track: 1.5, scrub: 1 },
     build: (tl, scene) => {
-      const football = one(scene, '.football');
-
+      parallax(tl, scene);
       fromTo(
         tl,
         q(scene, '.act-kicker, .act-title'),
@@ -421,24 +443,6 @@ export const CHOREOGRAPHY: Record<string, Choreography> = {
         { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.5 },
         0.35,
       );
-
-      // The ball settles onto the desk rather than appearing on it.
-      if (football) {
-        fromTo(
-          tl,
-          football,
-          { autoAlpha: 0, y: 70, rotate: -140, scale: 0.8 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            rotate: 0,
-            scale: 1,
-            ease: 'power2.out',
-            duration: 0.9,
-          },
-          0.55,
-        );
-      }
 
       fromTo(
         tl,

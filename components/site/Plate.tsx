@@ -1,4 +1,5 @@
 import type { Act } from '../../lib/db/queries.ts';
+import PlateVideo from './PlateVideo.tsx';
 
 /**
  * An act's scenery, in depth-ordered layers.
@@ -27,6 +28,10 @@ export default function Plate({ act }: { act: Act }) {
           )}
         </div>
       ))}
+
+      {act.loopMediaId && (
+        <PlateVideo mediaId={act.loopMediaId} posterId={act.plateMidMediaId} />
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { Act } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /**
@@ -9,12 +10,11 @@ import ActShell from '../site/ActShell.tsx';
  */
 const BOOT = [
   '$ sudo ./install-linux.sh',
-  'Detecting hardware ....................... ok',
-  'Installing base system ................... ok',
-  'Configuring wireless interface ........... ok',
+  '  base system .................. ok',
+  '  wireless interface ........... ok',
   '',
   '$ iwlist wlan0 scan | grep ESSID',
-  '          ESSID:"__________"        signal: -71 dBm',
+  '    ESSID:"__________"   -71 dBm',
   '',
   '  one network. not mine.',
   '  three weeks of reading.',
@@ -24,11 +24,11 @@ const BOOT = [
   '64 bytes from 1.1.1.1: time=41.2 ms',
   '',
   '  it worked.',
-];
+]
 
 export default function ActSignal({ act }: { act: Act }) {
   return (
-    <ActShell act={act} grade="signal">
+    <ActShell act={act} grade="signal" plate={<Plate act={act} />}>
       <div className="terminal" role="img" aria-label="A terminal showing a laptop being set up and connecting to a network for the first time">
         <div className="terminal-bar" aria-hidden="true">
           <span /><span /><span />

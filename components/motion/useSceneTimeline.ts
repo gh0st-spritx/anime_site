@@ -85,5 +85,5 @@ export function useSceneTimeline(
     return () => context.revert();
     // The choreography for an act is static; only intensity can change it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intensity, ref]);
+  }, [intensity, ref, options.pin]);
 }

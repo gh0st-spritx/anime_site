@@ -227,3 +227,18 @@
   .room-title { margin-bottom: 1rem; }
   .act-title { font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem); }
 }
+
+/* The Signal carries the most content of any act — three paragraphs plus the
+   terminal. On a short viewport that overruns the pinned screen and the next
+   act bleeds in underneath, so the terminal scales with the space available. */
+@media (max-height: 860px) {
+  .terminal { margin-top: 1.5rem; max-width: 40rem; }
+  .terminal-body { padding: 0.85rem 1rem; line-height: 1.5; font-size: 0.72rem; }
+  .terminal-bar { padding: 7px 10px; }
+  .terminal-bar span { width: 8px; height: 8px; }
+}
+@media (max-height: 700px) {
+  .act[data-act="signal"] .act-body p:not(:last-child) { margin-bottom: 0.6rem; }
+  .terminal-body { line-height: 1.35; font-size: 0.66rem; }
+  .act[data-act="signal"] .pull-quote { display: none; }
+}

@@ -1,4 +1,5 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /**
@@ -17,7 +18,7 @@ export default function ActTerminal({
   const categories = [...new Set(skills.map((s) => s.category))];
 
   return (
-    <ActShell act={act} grade="term">
+    <ActShell act={act} grade="term" plate={<Plate act={act} />}>
       <div className="skills">
         {categories.map((category) => (
           <section key={category} className="skills-group" aria-label={category}>

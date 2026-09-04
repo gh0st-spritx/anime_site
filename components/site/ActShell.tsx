@@ -29,6 +29,7 @@ export default function ActShell({
   children,
   showBody = true,
   plate,
+  overlay,
 }: {
   act: Act;
   grade: Grade;
@@ -38,6 +39,12 @@ export default function ActShell({
   showBody?: boolean;
   /** Scenery layers rendered behind the content. */
   plate?: React.ReactNode;
+  /**
+   * Anchored to the act itself rather than the text column. `.act-inner` is
+   * position:relative for stacking, so anything absolutely positioned inside it
+   * measures from the text block and lands mid-panel instead of at the edge.
+   */
+  overlay?: React.ReactNode;
 }) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2';
   const headingId = `act-${act.key}-title`;
@@ -66,6 +73,8 @@ export default function ActShell({
 
         {children}
       </div>
+
+      {overlay}
     </section>
   );
 }

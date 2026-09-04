@@ -1,4 +1,5 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /** Act 4 — The Classroom. The education timeline, including the exam year. */
@@ -10,7 +11,7 @@ export default function ActClassroom({
   education: PageData['education'];
 }) {
   return (
-    <ActShell act={act} grade="lamp">
+    <ActShell act={act} grade="lamp" plate={<Plate act={act} />}>
       <ol className="timeline">
         {education.map((e) => (
           <li key={e.id}>

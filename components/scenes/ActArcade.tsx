@@ -1,4 +1,5 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /** Act 7.5 — The Arcade. The competitive instinct, changed venue. */
@@ -10,7 +11,7 @@ export default function ActArcade({
   games: PageData['games'];
 }) {
   return (
-    <ActShell act={act} grade="neon">
+    <ActShell act={act} grade="neon" plate={<Plate act={act} />}>
       <ul className="grid-auto games">
         {games.map((g) => (
           <li key={g.id} className="card game" data-status={g.status}>

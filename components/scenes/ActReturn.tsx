@@ -1,7 +1,7 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
 import { hrefFor, isExternal } from '../../lib/links.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
-import Football from '../site/Football.tsx';
 
 /**
  * Act 8 — The Return. The Act 0 room at dawn. The football is on the desk now.
@@ -17,10 +17,7 @@ export default function ActReturn({
   name: string;
 }) {
   return (
-    <ActShell act={act} grade="dawn">
-      {/* The same object as Act 0, moved. */}
-      <Football state="on-desk" />
-
+    <ActShell act={act} grade="dawn" plate={<Plate act={act} />}>
       <ul className="contacts">
         {links.map((l) => {
           const href = hrefFor(l.kind, l.value);

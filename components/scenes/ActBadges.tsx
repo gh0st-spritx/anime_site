@@ -1,4 +1,5 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /** Act 6 — The Badges. Certifications, with verify links where they exist. */
@@ -10,7 +11,7 @@ export default function ActBadges({
   certifications: PageData['certifications'];
 }) {
   return (
-    <ActShell act={act} grade="violet">
+    <ActShell act={act} grade="violet" plate={<Plate act={act} />}>
       <ul className="grid-auto badges">
         {certifications.map((c) => (
           <li key={c.id} className="card badge">

@@ -1,4 +1,5 @@
 import type { Act, PageData } from '../../lib/db/queries.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell from '../site/ActShell.tsx';
 
 /**
@@ -17,7 +18,7 @@ export default function ActWorkshop({
   const isEarly = projects.length < 3;
 
   return (
-    <ActShell act={act} grade="white" showBody={isEarly}>
+    <ActShell act={act} grade="white" plate={<Plate act={act} />} showBody={isEarly}>
       {projects.length === 0 ? (
         <ul className="pedestals" aria-label="Projects — none yet">
           {[0, 1, 2].map((i) => (

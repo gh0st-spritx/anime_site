@@ -1,12 +1,13 @@
 import type { Act } from '../../lib/db/queries.ts';
 import { ageFrom } from '../../lib/age.ts';
+import Plate from '../site/Plate.tsx';
 import ActShell, { Paragraphs } from '../site/ActShell.tsx';
-import Football from '../site/Football.tsx';
 
 /**
  * Act 0 — The Room. Night, the desk, the two machines. The football sits under
  * the desk gathering dust; Act 8 puts it on the desk. That object is the film's
- * whole argument, so it is marked for the choreography to find.
+ * whole argument, and it lives in the generated plate itself rather than as an
+ * overlay — one painted ball, lit by the scene it is in.
  *
  * The shell's own body is suppressed: this act needs the title line to sit
  * between the name and the prose, so it renders both itself.
@@ -27,10 +28,15 @@ export default function ActRoom({
   return (
     <ActShell
       act={act}
-      grade="night"
+      grade="night" plate={<Plate act={act} />}
       headingLevel={1}
       titleOverride={name}
       showBody={false}
+      overlay={
+        <p className="scroll-cue" aria-hidden="true">
+          <span>Scroll</span>
+        </p>
+      }
     >
       <p className="room-title">{title}</p>
 
@@ -54,13 +60,6 @@ export default function ActRoom({
           <dd>Learning to defend systems</dd>
         </div>
       </dl>
-
-      {/* Dust-covered here; on the desk in Act 8. */}
-      <Football state="under-desk" />
-
-      <p className="scroll-cue" aria-hidden="true">
-        <span>Scroll</span>
-      </p>
     </ActShell>
   );
 }
