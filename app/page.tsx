@@ -1,4 +1,7 @@
 import { getPageData } from '../lib/db/queries.ts';
+import { isIntensity } from '../lib/motion.ts';
+import MotionProvider from '../components/motion/MotionContext.tsx';
+import SmoothScroll from '../components/motion/SmoothScroll.tsx';
 import ActRoom from '../components/scenes/ActRoom.tsx';
 import ActPull from '../components/scenes/ActPull.tsx';
 import ActField from '../components/scenes/ActField.tsx';
@@ -28,11 +31,16 @@ export default async function Home() {
     );
   }
 
+  const siteIntensity = isIntensity(settings.motionIntensity)
+    ? settings.motionIntensity
+    : 'full';
+
   return (
-    <>
+    <MotionProvider siteIntensity={siteIntensity}>
       <a className="skip" href="#main">
         Skip to content
       </a>
+      <SmoothScroll />
 
       <main id="main">
         {data.acts.map((act) => {
@@ -93,6 +101,6 @@ export default async function Home() {
           }
         })}
       </main>
-    </>
+    </MotionProvider>
   );
 }
