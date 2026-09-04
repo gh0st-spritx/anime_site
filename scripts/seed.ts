@@ -64,7 +64,7 @@ const ACTS: {
     key: 'workshop',
     kicker: 'The shelves',
     title: 'Nothing shipped yet',
-    body: 'The shelves are empty, and that is not an accident — it is a date stamp. He is twenty, one year into a CSE degree, and building the foundation before the portfolio. Check back. This page fills itself in.',
+    body: 'The shelves are empty, and that is not an accident — it is a date stamp. One year into a CSE degree, foundation first, portfolio second. Check back. This page fills itself in.',
   },
   {
     key: 'arcade',
