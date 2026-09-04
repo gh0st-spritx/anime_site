@@ -1,7 +1,8 @@
-import { getPageData } from '../lib/db/queries.ts';
+import { getPageData, type Act } from '../lib/db/queries.ts';
 import { isIntensity } from '../lib/motion.ts';
 import MotionProvider from '../components/motion/MotionContext.tsx';
 import SmoothScroll from '../components/motion/SmoothScroll.tsx';
+import Scene from '../components/motion/Scene.tsx';
 import ActRoom from '../components/scenes/ActRoom.tsx';
 import ActPull from '../components/scenes/ActPull.tsx';
 import ActField from '../components/scenes/ActField.tsx';
@@ -35,6 +36,48 @@ export default async function Home() {
     ? settings.motionIntensity
     : 'full';
 
+  /** Each act's content. Scene wraps it to attach the choreography. */
+  function renderAct(act: Act) {
+    switch (act.key) {
+      case 'room':
+        return (
+          <ActRoom
+            act={act}
+            name={profile.name}
+            title={profile.title}
+            birthdate={profile.birthdate}
+          />
+        );
+      case 'pull':
+        return <ActPull act={act} />;
+      case 'field':
+        return <ActField act={act} />;
+      case 'signal':
+        return <ActSignal act={act} />;
+      case 'classroom':
+        return <ActClassroom act={act} education={data.education} />;
+      case 'terminal':
+        return <ActTerminal act={act} skills={data.skills} />;
+      case 'badges':
+        return <ActBadges act={act} certifications={data.certifications} />;
+      case 'workshop':
+        return (
+          <ActWorkshop
+            act={act}
+            projects={data.projects}
+            learning={data.learning}
+          />
+        );
+      case 'arcade':
+        return <ActArcade act={act} games={data.games} />;
+      case 'return':
+        return <ActReturn act={act} links={data.links} name={profile.name} />;
+      default:
+        // An act added to the database with no component yet.
+        return null;
+    }
+  }
+
   return (
     <MotionProvider siteIntensity={siteIntensity}>
       <a className="skip" href="#main">
@@ -44,61 +87,13 @@ export default async function Home() {
 
       <main id="main">
         {data.acts.map((act) => {
-          switch (act.key) {
-            case 'room':
-              return (
-                <ActRoom
-                  key={act.id}
-                  act={act}
-                  name={profile.name}
-                  title={profile.title}
-                  birthdate={profile.birthdate}
-                />
-              );
-            case 'pull':
-              return <ActPull key={act.id} act={act} />;
-            case 'field':
-              return <ActField key={act.id} act={act} />;
-            case 'signal':
-              return <ActSignal key={act.id} act={act} />;
-            case 'classroom':
-              return (
-                <ActClassroom key={act.id} act={act} education={data.education} />
-              );
-            case 'terminal':
-              return <ActTerminal key={act.id} act={act} skills={data.skills} />;
-            case 'badges':
-              return (
-                <ActBadges
-                  key={act.id}
-                  act={act}
-                  certifications={data.certifications}
-                />
-              );
-            case 'workshop':
-              return (
-                <ActWorkshop
-                  key={act.id}
-                  act={act}
-                  projects={data.projects}
-                  learning={data.learning}
-                />
-              );
-            case 'arcade':
-              return <ActArcade key={act.id} act={act} games={data.games} />;
-            case 'return':
-              return (
-                <ActReturn
-                  key={act.id}
-                  act={act}
-                  links={data.links}
-                  name={profile.name}
-                />
-              );
-            default:
-              // An act added to the database with no component yet.
-              return null;
-          }
+          const content = renderAct(act);
+          if (!content) return null;
+          return (
+            <Scene key={act.id} actKey={act.key}>
+              {content}
+            </Scene>
+          );
         })}
       </main>
     </MotionProvider>

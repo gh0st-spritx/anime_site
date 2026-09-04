@@ -28,6 +28,7 @@ export default function ActShell({
   titleOverride,
   children,
   showBody = true,
+  plate,
 }: {
   act: Act;
   grade: Grade;
@@ -35,6 +36,8 @@ export default function ActShell({
   titleOverride?: React.ReactNode;
   children?: React.ReactNode;
   showBody?: boolean;
+  /** Scenery layers rendered behind the content. */
+  plate?: React.ReactNode;
 }) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2';
   const headingId = `act-${act.key}-title`;
@@ -47,6 +50,7 @@ export default function ActShell({
       data-grade={grade}
       aria-labelledby={headingId}
     >
+      {plate}
       <div className="act-inner">
         {act.kicker && <p className="act-kicker">{act.kicker}</p>}
 

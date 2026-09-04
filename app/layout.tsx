@@ -3,6 +3,8 @@ import { db } from '../lib/db/index.ts';
 import { profile, settings } from '../lib/db/schema.ts';
 import './globals.css';
 import './scenes.css';
+import './motion.css';
+import './plate.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const p = db.select().from(profile).get();
