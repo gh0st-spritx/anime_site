@@ -4,6 +4,7 @@ import MotionProvider from '../components/motion/MotionContext.tsx';
 import SmoothScroll from '../components/motion/SmoothScroll.tsx';
 import Scene from '../components/motion/Scene.tsx';
 import AtmosphereCanvas from '../components/motion/AtmosphereCanvas.tsx';
+import AudioToggle from '../components/motion/AudioToggle.tsx';
 import ActRoom from '../components/scenes/ActRoom.tsx';
 import ActPull from '../components/scenes/ActPull.tsx';
 import ActField from '../components/scenes/ActField.tsx';
@@ -86,6 +87,7 @@ export default async function Home() {
       </a>
       <SmoothScroll />
       <AtmosphereCanvas />
+      <AudioToggle armed={settings.audioDefaultOn} />
 
       <main id="main">
         {data.acts.map((act) => {

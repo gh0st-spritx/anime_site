@@ -6,6 +6,7 @@ import './scenes.css';
 import './motion.css';
 import './plate.css';
 import './atmosphere.css';
+import './audio.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const p = db.select().from(profile).get();
