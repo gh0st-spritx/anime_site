@@ -44,7 +44,7 @@ These are load-bearing. Copy must not contradict them.
 | Name | Soumik Halder |
 | Born | 10 June 2006 — age rendered live, currently 20 |
 | Title | Cybersecurity & AI Enthusiast · CSE @ NSU |
-| Education | Govt. Sundarban College (Science), 2022–2024 · North South University (CSE), Sept 2025–present |
+| Education | Govt. Sundarban College (Science), 2022–2024 · admission-exam year, 2024–2025 · North South University (CSE), Sept 2025–present |
 | Certifications | CompTIA A+ · CompTIA ITF+ · Google AI Professional · IELTS Band 7 |
 | Skills | English (IELTS 7), general computing, Python, Linux, web development |
 | Learning now | TryHackMe, Python, web development |
@@ -73,7 +73,7 @@ the choreography is code.
 | 1 | **The Pull** — camera pushes into the monitor, light blooms, whiteout | Transition only | Blue → white |
 | 2 | **The Field** — golden hour by the river, the striker mid-strike, friends, egrets lifting | About | Warm gold, monsoon green |
 | 3 | **The Signal** — night at a window, a router light across the dark, Linux booting, the terminal, then the screen filling with light | Origin — the turn | Deep night → green CRT → cyan |
-| 4 | **The Classroom** — provincial college light dissolving into Dhaka and the NSU campus | Education timeline | Chalk warm → city cyan |
+| 4 | **The Classroom** — provincial college light, then a lamp-lit year of admission prep, dissolving into Dhaka and the NSU campus | Education timeline | Chalk warm → lamp amber → city cyan |
 | 5 | **The Terminal** — dark room, packets rendered as travelling light | Skills matrix | Cyan / violet |
 | 6 | **The Badges** — four certification cards assembling out of light | Certifications | Violet, holographic |
 | 7 | **The Workshop** — lit, waiting pedestals, mostly empty | Projects + Currently-learning tracker | Cool white |
