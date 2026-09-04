@@ -1,0 +1,95 @@
+/* Admin panel: a deliberately plain, dense control surface. It is a tool, not
+   part of the film — no animation, high contrast, fast to scan. */
+
+.adm {
+  --bg: #0b0d10;
+  --panel: #14181d;
+  --panel-2: #1b2027;
+  --line: #262d36;
+  --text: #e8edf3;
+  --muted: #8d99a8;
+  --accent: #6ee7ff;
+  --danger: #ff6b6b;
+  --ok: #4ade80;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.adm a { color: var(--accent); text-decoration: none; }
+.adm a:hover { text-decoration: underline; }
+
+.adm-shell { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+@media (max-width: 800px) { .adm-shell { grid-template-columns: 1fr; } }
+
+.adm-side {
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.adm-brand {
+  font-weight: 650; letter-spacing: -0.01em; margin-bottom: 4px; padding: 0 8px;
+}
+.adm-brand small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
+
+.adm-navlabel {
+  color: var(--muted); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; margin: 16px 8px 6px;
+}
+.adm-nav {
+  display: block; padding: 7px 10px; border-radius: 7px; color: var(--text);
+}
+.adm-nav:hover { background: var(--panel-2); text-decoration: none; }
+.adm-nav[aria-current="page"] { background: var(--panel-2); color: var(--accent); }
+.adm-nav .count { float: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.adm-main { padding: 28px 32px 64px; max-width: 980px; }
+.adm-h1 { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; margin: 0 0 4px; }
+.adm-sub { color: var(--muted); margin: 0 0 24px; }
+
+.adm-card {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 20px;
+}
+
+/* Forms */
+.adm-field { display: block; margin-bottom: 16px; }
+.adm-field > span { display: block; margin-bottom: 6px; font-weight: 500; }
+.adm-field .help { display: block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 2px; }
+.adm input[type="text"], .adm input[type="password"], .adm input[type="url"],
+.adm input[type="email"], .adm input[type="number"], .adm input[type="date"],
+.adm input[type="tel"], .adm textarea, .adm select {
+  width: 100%; padding: 9px 11px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  font: inherit;
+}
+.adm textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+.adm input:focus-visible, .adm textarea:focus-visible, .adm select:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent;
+}
+
+.adm-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--panel-2); color: var(--text); font: inherit; font-weight: 500;
+  cursor: pointer;
+}
+.adm-btn:hover { border-color: var(--muted); }
+.adm-btn[data-variant="primary"] { background: var(--accent); color: #04252c; border-color: transparent; }
+.adm-btn[data-variant="danger"] { color: var(--danger); }
+.adm-btn:disabled { opacity: 0.55; cursor: progress; }
+
+.adm-error, .adm-ok {
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; font-weight: 500;
+}
+.adm-error { background: #2a1416; border: 1px solid #4a1f24; color: #ffb4b4; }
+.adm-ok { background: #10251a; border: 1px solid #1e4633; color: #9df5c4; }
+
+/* Centred auth screens */
+.adm-auth { display: grid; place-items: center; min-height: 100vh; padding: 24px; }
+.adm-auth .adm-card { width: 100%; max-width: 400px; }

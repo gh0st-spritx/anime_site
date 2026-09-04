@@ -55,8 +55,9 @@ test('a tampered session token is rejected', async () => {
   process.env.SESSION_SECRET = 'test-secret-at-least-32-chars-long!!';
   const { createSession, readSession } = await import('../lib/session.ts');
 
-  const token = await createSession(1);
+  const token = await createSession(1, 'abc123');
   assert.equal((await readSession(token))?.uid, 1);
+  assert.equal((await readSession(token))?.fp, 'abc123');
 
   const parts = token.split('.');
   parts[1] = Buffer.from(JSON.stringify({ uid: 99 })).toString('base64url');
@@ -70,7 +71,7 @@ test('a tampered session token is rejected', async () => {
 test('a session signed with a different secret is rejected', async () => {
   process.env.SESSION_SECRET = 'secret-number-one-padded-to-32-chars';
   const one = await import('../lib/session.ts');
-  const token = await one.createSession(1);
+  const token = await one.createSession(1, 'abc123');
 
   // Same module, different secret at verify time.
   process.env.SESSION_SECRET = 'secret-number-two-padded-to-32-chars';
@@ -87,4 +88,48 @@ test('login throttle opens, closes, and can be cleared', async () => {
 
   clearRate(ip);
   assert.ok(checkRate(ip), 'a successful login clears the counter');
+});
+
+test('a session is bound to the password hash, so a change revokes it', async () => {
+  process.env.SESSION_SECRET = 'test-secret-at-least-32-chars-long!!';
+  const { sessionFingerprint, createSession, readSession } = await import(
+    '../lib/session.ts'
+  );
+
+  const oldHash = await hashPassword('the-old-password');
+  const newHash = await hashPassword('the-new-password');
+
+  const token = await createSession(1, sessionFingerprint(oldHash));
+  const claims = await readSession(token);
+  assert.ok(claims);
+
+  // The token itself is still validly signed...
+  assert.equal(claims.uid, 1);
+  // ...but the guard compares the fingerprint against the CURRENT hash, and a
+  // password change must not leave old sessions working.
+  assert.equal(claims.fp, sessionFingerprint(oldHash));
+  assert.notEqual(claims.fp, sessionFingerprint(newHash));
+});
+
+test('fingerprints differ even for the same password, because hashes are salted', async () => {
+  const { sessionFingerprint } = await import('../lib/session.ts');
+  const a = await hashPassword('identical');
+  const b = await hashPassword('identical');
+  assert.notEqual(sessionFingerprint(a), sessionFingerprint(b));
+  assert.equal(sessionFingerprint(a).length, 16);
+});
+
+test('a session missing its fingerprint claim is rejected', async () => {
+  process.env.SESSION_SECRET = 'test-secret-at-least-32-chars-long!!';
+  const { SignJWT } = await import('jose');
+  const { readSession } = await import('../lib/session.ts');
+
+  // A token shaped like the pre-fix format: signed correctly, but no `fp`.
+  const legacy = await new SignJWT({ uid: 1 })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('7d')
+    .sign(new TextEncoder().encode(process.env.SESSION_SECRET));
+
+  assert.equal(await readSession(legacy), null);
 });

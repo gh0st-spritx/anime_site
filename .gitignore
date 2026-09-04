@@ -41,3 +41,6 @@ out/
 public/uploads/
 yarn-debug.log*
 yarn-error.log*
+
+# Keep the template, ignore real secrets.
+!.env.example
