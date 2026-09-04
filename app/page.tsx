@@ -3,6 +3,7 @@ import { isIntensity } from '../lib/motion.ts';
 import MotionProvider from '../components/motion/MotionContext.tsx';
 import SmoothScroll from '../components/motion/SmoothScroll.tsx';
 import Scene from '../components/motion/Scene.tsx';
+import AtmosphereCanvas from '../components/motion/AtmosphereCanvas.tsx';
 import ActRoom from '../components/scenes/ActRoom.tsx';
 import ActPull from '../components/scenes/ActPull.tsx';
 import ActField from '../components/scenes/ActField.tsx';
@@ -84,6 +85,7 @@ export default async function Home() {
         Skip to content
       </a>
       <SmoothScroll />
+      <AtmosphereCanvas />
 
       <main id="main">
         {data.acts.map((act) => {

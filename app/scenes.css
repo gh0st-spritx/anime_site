@@ -206,3 +206,24 @@
 }
 .maintenance h1 { font-family: var(--font-display); font-weight: 400; margin: 0; }
 .maintenance p { color: var(--ink-dim); margin: 0; }
+
+/* Short viewports: the room is dense, and a pinned act is exactly one screen
+   tall, so the absolutely-positioned cue and ball collide with the facts row.
+   Drop the cue and tuck the ball rather than letting them overlap. */
+@media (max-height: 760px) {
+  .scroll-cue { display: none; }
+  .football { width: clamp(38px, 5vw, 58px); bottom: 0.75rem; right: 1.25rem; }
+  .room-facts { margin-top: 2rem; padding-top: 1.1rem; gap: 1.75rem; }
+}
+@media (max-height: 620px) {
+  .act { padding-top: 3rem; padding-bottom: 3rem; }
+  /* Compact, never hidden — these are facts about him, not decoration. */
+  .room-facts {
+    margin-top: 1.25rem; padding-top: 0.85rem; gap: 1.25rem;
+    font-size: 0.85rem;
+  }
+  .room-facts dt { margin-bottom: 0.1rem; font-size: 0.6rem; }
+  .room-facts dd { font-size: 0.9rem; }
+  .room-title { margin-bottom: 1rem; }
+  .act-title { font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem); }
+}
