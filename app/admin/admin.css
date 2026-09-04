@@ -93,3 +93,59 @@
 /* Centred auth screens */
 .adm-auth { display: grid; place-items: center; min-height: 100vh; padding: 24px; }
 .adm-auth .adm-card { width: 100%; max-width: 400px; }
+
+/* Tables */
+.adm-table { width: 100%; border-collapse: collapse; }
+.adm-table th, .adm-table td {
+  text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.adm-table th {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--muted); font-weight: 600;
+}
+.adm-table tr:last-child td { border-bottom: 0; }
+.adm-table tbody tr:hover { background: var(--panel-2); }
+
+.adm-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.adm-icon {
+  display: inline-grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--panel-2);
+  color: var(--text); cursor: pointer; font: inherit; line-height: 1;
+  margin-left: 4px; text-decoration: none;
+}
+.adm-icon:hover { border-color: var(--muted); text-decoration: none; }
+.adm-icon:disabled { opacity: 0.3; cursor: default; }
+.adm-icon[data-danger="true"]:hover { color: var(--danger); border-color: var(--danger); }
+
+.adm-pill {
+  padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
+  cursor: pointer; font-family: inherit;
+}
+.adm-pill[data-on="true"] { color: var(--ok); border-color: #1e4633; background: #10251a; }
+.adm-pill:disabled { opacity: 0.5; cursor: progress; }
+
+/* Checkboxes and ranges */
+.adm-check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+.adm-check input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent); }
+.adm-check > span { font-weight: 500; }
+
+.adm-range { display: flex; align-items: center; gap: 12px; }
+.adm-range input[type="range"] { flex: 1; accent-color: var(--accent); }
+.adm-range output {
+  min-width: 46px; text-align: right; font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+/* Media field */
+.adm-media { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.adm-media-thumb {
+  width: 72px; height: 72px; object-fit: cover; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg);
+}
+.adm-media-id, .adm-media-empty { color: var(--muted); font-variant-numeric: tabular-nums; }

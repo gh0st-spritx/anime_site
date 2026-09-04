@@ -22,6 +22,8 @@ export type FieldDef = {
   options?: string[];
   help?: string;
   required?: boolean;
+  /** Used for a NEW row only, so the form matches the schema's own default. */
+  defaultValue?: unknown;
 };
 
 export type ResourceDef = {
@@ -42,6 +44,9 @@ const visibleField: FieldDef = {
   name: 'visible',
   label: 'Show on site',
   type: 'boolean',
+  // Matches the schema default. Without this a newly created row renders its
+  // checkbox unchecked, and anything added would silently be invisible.
+  defaultValue: true,
 };
 
 export const RESOURCES: Record<string, ResourceDef> = {
@@ -243,4 +248,19 @@ export const RESOURCE_KEYS = Object.keys(RESOURCES);
 
 export function getResource(key: string): ResourceDef | undefined {
   return RESOURCES[key];
+}
+
+/**
+ * The parts of a resource that are safe to hand to a Client Component.
+ *
+ * `table` is a Drizzle table built from recursive column proxies. Passing a
+ * whole ResourceDef across the server/client boundary makes React try to
+ * serialize it and overflow the stack ("Maximum call stack size exceeded" in
+ * SQLiteInteger.toString). Client components take this instead.
+ */
+export type ClientResource = Omit<ResourceDef, 'table'>;
+
+export function toClientResource(resource: ResourceDef): ClientResource {
+  const { table: _table, ...rest } = resource;
+  return rest;
 }
